@@ -1,0 +1,209 @@
+<div class="row esp-sub-header pt-2 ml-0">
+    <div *ngIf="isLoading" class="progress-img d-flex text-center">
+        <img src="./assets/images/esp-loader-genreal.gif" class="justify-content-center align-self-center mx-auto">
+    </div>
+    <div class="col section-logo">
+        <figure>
+            <img src="./assets/images/image.png">
+        </figure>
+    </div>
+    <div class="col has-bulkedit text-center text-lg-left text-md-right text-sm-right pt-1  pl-0">
+        <button type="submit" class="btn btn-blue with-btn-gray my-1 mr-2" (click)="openBulkEdit()">
+            <i class="material-icons">edit
+            </i>Bulk Edit</button>
+
+        <div class="dropdown sort-by-list">
+            <button class="btn esp-btn-white my-1 mr-2 p-1 dropdown-toggle" type="button" id="dropdownMenuButton"
+                data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                Sort By
+            </button>
+            <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
+                <a class="dropdown-item" [routerLink]="" (click)="changeSort('Last Updated')">Last Updated</a>
+                <a class="dropdown-item" [routerLink]="" (click)="changeSort('Product Name')">Product Name</a>
+                <a class="dropdown-item" [routerLink]="" (click)="changeSort('Product Number')">Product Number</a>
+                <a class="dropdown-item" [routerLink]="" (click)="changeSort('Catalog')">Catalog</a>
+            </div>
+        </div>
+        <!-- (click)="openEmailSupplier()" -->
+        <button type="submit" (click)="openEmailSupplier()" class="btn btn-blue with-btn-gray my-1 pl-3">
+            <i class="material-icons">email
+            </i>Email Supplier</button>
+
+    </div>
+    <app-page *ngIf='products && products.length > 0' [totalCount]='totalCount' [currPage]='currPage'
+        (navigate)="navigatePage($event)">
+    </app-page>
+</div>
+<div class="row h-100">
+    <div class="col side-nav-toolbar pt-2 ml-3">
+        <a class="manage-product">
+            <i class="material-icons">
+                card_giftcard
+            </i>Manage Products</a>
+        <div class="clearfix"></div>
+
+        <div class="input-group  pt-2">
+            <input type="text" class="form-control" [(ngModel)]="mdlsearch" placeholder="Search Product"
+                aria-describedby="btnSearch" (keyup.enter)="searchClick(mdlsearch)">
+            <div class="input-group-append">
+                <button class="btn btn-search pt-2" id="btnSearch" (click)=searchClick(mdlsearch) type="button">
+                    <i class="material-icons">
+                        search
+                    </i>
+                </button>
+            </div>
+        </div>
+        <div class="form-check my-1 mr-sm-2">
+            <input type="checkbox" class="form-check-input" [(ngModel)]="isExactMatch" id="cbxExactMatch">
+            <label class="form-check-label label-light" for="cbxExactMatch">Exact Match</label>
+        </div>
+        <div class="row">
+            <ul class="side-nav-list mt-2">
+                <li [hidden]="selectedFacetTerms.length == 0 && !showhideSearch">
+                    <a>Your Search Terms</a>
+                    <ul class="side-sub-nav-list">
+                        <li *ngIf="showhideSearch" class="pl-3">
+                            <a class="remove-searched">{{searchtxt}} <input (click)="cancelSearch()" type="button" /> <i
+                                    class="material-icons">close</i>
+                            </a>
+                        </li>
+                        <li *ngFor="let selected of selectedFacetTerms" class="pl-3">
+                            <a class="remove-searched">{{selected.Term}} <input (click)="cancelItem(selected)"
+                                    type="button" /> <i class="material-icons">close</i>
+                            </a>
+                        </li>
+                    </ul>
+                    <div>
+                        <a class="clearall-txt" [routerLink]="" (click)="clearAll()">Clear All</a>
+                    </div>
+                </li>
+                <li>
+                    <a href=".seo-status" data-toggle="collapse">SEO Status</a>
+                    <ul class="side-sub-nav-list collapse seo-status show">
+                        <li *ngFor="let enum of seoStausEnum | keyvalue; let i = index"
+                            [hidden]="i >= 3 && !seoStatusShowAll">
+                            <a [routerLink]="">{{enum.value}}</a>
+                        </li>
+                        <li>
+                            <a class="see-all" (click)="toggleSEOStatus(seoStatusShowAll)">See
+                                {{ !seoStatusShowAll ? "All" : "Less" }}
+                                <i class="material-icons">
+                                    {{ !seoStatusShowAll ? "add_circle" : "remove_circle" }}
+                                </i>
+                            </a>
+                        </li>
+                    </ul>
+                </li>
+                <li>
+                    <a href=".seo-flag" data-toggle="collapse">SEO Flag</a>
+                    <ul class="side-sub-nav-list collapse  seo-flag  show">
+                        <li><a [routerLink]="">Yes</a></li>
+                        <li><a [routerLink]="">No</a></li>
+                    </ul>
+                </li>
+                <li>
+                    <a href="#product_type" data-toggle="collapse">Product Type</a>
+                    <ul class="side-sub-nav-list collapse show" id="product_type">
+                        <li><a [routerLink]="">Type 1</a></li>
+                        <li><a [routerLink]="">Type 2</a></li>
+                    </ul>
+                </li>
+                <li *ngFor="let search of objSearchFilter">
+                    <a href="#{{ search.FacetId }}" data-toggle="collapse">{{search.Facet}}</a>
+                    <ul class="side-sub-nav-list collapse show" id="{{ search.FacetId }}">
+                        <li *ngFor="let facetTerm of search.Terms; let i = index" [hidden]="i >= 5 && !search.SeeAll">
+                            <a [routerLink]="" (click)="facetTermClick(search.Facet, facetTerm)">{{facetTerm.Term}}
+                                ({{facetTerm.Count}})</a>
+                        </li>
+                        <li *ngIf="search.Terms.length > 5">
+                            <a class="see-all" (click)="toggleSee(search)">See
+                                {{ !search.SeeAll ? "All" : "Less" }}
+                                <i class="material-icons">
+                                    {{ !search.SeeAll ? "add_circle" : "remove_circle" }}
+                                </i>
+                            </a>
+                        </li>
+                    </ul>
+                </li>
+            </ul>
+        </div>
+    </div>
+    <div class="col pb-5">
+        <div class="action-tool-bar px-2">
+            <div class="row">
+                <div class="col-6">
+                    <div class="custom-control custom-checkbox my-1 mr-sm-2">
+                        <input type="checkbox" name="selectAll" id="selectAll" (change)="onSelectAllProducts($event)"
+                            [(ngModel)]="isSelectAll" />
+                        <label class="label-black" for="selectAll">Select All</label>
+                    </div>
+                </div>
+                <div class="col-2 pl-2">
+                    <label>Product Status</label>
+                </div>
+                <div class="col-2 pl-2">
+                    <label>SEO Status</label>
+                </div>
+                <div class="col-2">
+                    <label>Actions</label>
+                </div>
+
+            </div>
+
+        </div>
+        <div [hidden]="!noProductsFound" class="col-12 result-box no-products mt-2 text-center">
+            <h5 class="mt-5 text-normal">No Product Found</h5>
+        </div>
+        <div [hidden]="noProductsFound" class="col-12 result-box mt-2" *ngFor="let product of products">
+            <div class="row">
+                <div class="col-6 pl-2 d-flex pt-3">
+                    <div class="select-all-box p-0">
+                        <div class="custom-control custom-checkbox">
+                            <input type="checkbox" [(ngModel)]="product.IsSelected"
+                                (change)="onSelectProduct(product)" />
+                        </div>
+                    </div>
+                    <div class="result-img">
+                        <img style="width:114px;height:126px;"
+                            src="{{ product.PrimaryImageUrl && product.PrimaryImageUrl !== '' ? product.PrimaryImageUrl : './assets/images/no_image.png' }}">
+                    </div>
+                    <div class="result-content pl-2 ">
+                        <h6>{{product.Name}}</h6>
+                        <p>
+                            <span class="label-black">External Product ID: </span>{{product.ExternalProductId}}</p>
+                        <p>
+                            <span class="label-black">Created on: </span>{{product.CreateDateUtc | date}}</p>
+                        <p>
+                            <span class="label-black">Made active: </span>{{product.PublishDateUtc | date}}</p>
+                        <p>
+                            <span class="label-black">Last updated by: </span>{{product.LastUpdatedBy}} on
+                            {{product.LastUpdateDateUtc | date}}</p>
+                            <br>
+                        <p>
+                            {{product.Description}}</p>
+
+                    </div>
+
+                </div>
+                <div class="col-2 d-flex align-content-center flex-wrap">
+                    <label>{{ productStatusEnum[product.ProductStatus] ? productStatusEnum[product.ProductStatus] : '' }}</label>
+                </div>
+                <div class="col-2 d-flex align-content-center flex-wrap">
+                    <label>{{ seoStausEnum[product.SEOStatus] ? seoStausEnum[product.SEOStatus] : seoStausEnum.REDY }}</label>
+                </div>
+                <div class="col-2 p-lg-3 p-0 d-flex align-content-center flex-wrap">
+                    <button class="btn esp-btn-white my-1 mr-2 p-1" (click)="viewProduct(product.ExternalProductId)">Start
+                        SEO</button>
+                    <!-- (click)="viewProduct(product.ExternalProductId)" -->
+                </div>
+            </div>
+
+        </div>
+        <div class="col float-right pr-0 btm-pagination">
+            <app-page *ngIf='products && products.length > 0' [totalCount]='totalCount'
+                (navigate)="navigatePage($event)" [currPage]='currPage'>
+            </app-page>
+        </div>
+    </div>
+
+</div>

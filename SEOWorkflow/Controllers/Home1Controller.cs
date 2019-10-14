@@ -11,7 +11,7 @@ namespace SEOWorkflow.Controllers
 {
     public class Home1Controller : BaseController
     {
-        //[Authorize]
+        [Authorize]
         public ActionResult Index()
         {
             // Internal SSOs need to explicitly impersonate a company, before they're allowed to view Index()

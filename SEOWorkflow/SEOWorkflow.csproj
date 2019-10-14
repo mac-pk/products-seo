@@ -380,6 +380,37 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
+    <Content Include="Angular\karma.conf.js" />
+    <Content Include="Angular\src\app\app.component.css" />
+    <Content Include="Angular\src\app\app.component.html" />
+    <Content Include="Angular\src\app\login\login.component.css" />
+    <Content Include="Angular\src\app\login\login.component.html" />
+    <Content Include="Angular\src\app\modals\bulk-edit-modal\bulk-edit-modal.component.css" />
+    <Content Include="Angular\src\app\modals\bulk-edit-modal\bulk-edit-modal.component.html" />
+    <Content Include="Angular\src\app\modals\clear-all-modal\clear-all-modal.component.css" />
+    <Content Include="Angular\src\app\modals\clear-all-modal\clear-all-modal.component.html" />
+    <Content Include="Angular\src\app\modals\email-supplier-modal\email-supplier-modal.component.css" />
+    <Content Include="Angular\src\app\modals\email-supplier-modal\email-supplier-modal.component.html" />
+    <Content Include="Angular\src\app\modals\product-category-modal\product-category-modal.component.css" />
+    <Content Include="Angular\src\app\modals\product-category-modal\product-category-modal.component.html" />
+    <Content Include="Angular\src\app\product-optimization\product-optimization.component.css" />
+    <Content Include="Angular\src\app\product-optimization\product-optimization.component.html" />
+    <Content Include="Angular\src\app\search-product\search-product.component.css" />
+    <Content Include="Angular\src\app\search-product\search-product.component.html" />
+    <Content Include="Angular\src\app\search-supplier\search-supplier.component.css" />
+    <Content Include="Angular\src\app\search-supplier\search-supplier.component.html" />
+    <Content Include="Angular\src\app\shared\page\page.component.css" />
+    <Content Include="Angular\src\app\shared\page\page.component.html" />
+    <Content Include="Angular\src\assets\asiLogo-login.png" />
+    <Content Include="Angular\src\assets\esp.png" />
+    <Content Include="Angular\src\assets\image.png" />
+    <Content Include="Angular\src\assets\images\asiLogo-login.png" />
+    <Content Include="Angular\src\assets\images\esp-loader-genreal.gif" />
+    <Content Include="Angular\src\assets\images\image.png" />
+    <Content Include="Angular\src\assets\images\no_image.png" />
+    <Content Include="Angular\src\favicon.ico" />
+    <Content Include="Angular\src\index.html" />
+    <Content Include="Angular\src\styles.css" />
     <Content Include="Content\bootstrap-theme.css" />
     <Content Include="Content\bootstrap-theme.min.css" />
     <Content Include="Content\bootstrap.css" />
@@ -434,6 +465,21 @@
     <Content Include="fonts\glyphicons-halflings-regular.woff" />
     <Content Include="fonts\glyphicons-halflings-regular.woff2" />
     <Content Include="log4net.config" />
+    <Content Include="Angular\.editorconfig" />
+    <Content Include="Angular\.gitignore" />
+    <Content Include="Angular\angular.json" />
+    <Content Include="Angular\browserslist" />
+    <Content Include="Angular\package-lock.json" />
+    <Content Include="Angular\package.json" />
+    <Content Include="Angular\README.md" />
+    <Content Include="Angular\src\assets\.gitkeep" />
+    <Content Include="Angular\src\assets\json\facetSearch.json" />
+    <Content Include="Angular\src\assets\json\productCategory.json" />
+    <Content Include="Angular\src\assets\json\searchproduct.json" />
+    <Content Include="Angular\tsconfig.app.json" />
+    <Content Include="Angular\tsconfig.json" />
+    <Content Include="Angular\tsconfig.spec.json" />
+    <Content Include="Angular\tslint.json" />
     <None Include="packages.config" />
     <Content Include="Views\EIT\index.cshtml" />
     <Content Include="Views\Home\About.cshtml" />
@@ -469,8 +515,67 @@
   <ItemGroup>
     <Service Include="{4A0DDDB5-7A95-4FBF-97CC-616D07737A77}" />
   </ItemGroup>
+  <ItemGroup />
   <ItemGroup>
-    <Folder Include="Angular\" />
+    <TypeScriptCompile Include="Angular\src\app\app-routing.module.ts" />
+    <TypeScriptCompile Include="Angular\src\app\app.component.spec.ts" />
+    <TypeScriptCompile Include="Angular\src\app\app.component.ts" />
+    <TypeScriptCompile Include="Angular\src\app\app.module.ts" />
+    <TypeScriptCompile Include="Angular\src\app\auth\auth.guard.spec.ts" />
+    <TypeScriptCompile Include="Angular\src\app\auth\auth.guard.ts" />
+    <TypeScriptCompile Include="Angular\src\app\auth\auth.interceptor.ts" />
+    <TypeScriptCompile Include="Angular\src\app\login\login.component.spec.ts" />
+    <TypeScriptCompile Include="Angular\src\app\login\login.component.ts" />
+    <TypeScriptCompile Include="Angular\src\app\modals\bulk-edit-modal\bulk-edit-modal.component.spec.ts" />
+    <TypeScriptCompile Include="Angular\src\app\modals\bulk-edit-modal\bulk-edit-modal.component.ts" />
+    <TypeScriptCompile Include="Angular\src\app\modals\clear-all-modal\clear-all-modal.component.spec.ts" />
+    <TypeScriptCompile Include="Angular\src\app\modals\clear-all-modal\clear-all-modal.component.ts" />
+    <TypeScriptCompile Include="Angular\src\app\modals\email-supplier-modal\email-supplier-modal.component.spec.ts" />
+    <TypeScriptCompile Include="Angular\src\app\modals\email-supplier-modal\email-supplier-modal.component.ts" />
+    <TypeScriptCompile Include="Angular\src\app\modals\product-category-modal\product-category-modal.component.spec.ts" />
+    <TypeScriptCompile Include="Angular\src\app\modals\product-category-modal\product-category-modal.component.ts" />
+    <TypeScriptCompile Include="Angular\src\app\product-optimization\product-optimization.component.spec.ts" />
+    <TypeScriptCompile Include="Angular\src\app\product-optimization\product-optimization.component.ts" />
+    <TypeScriptCompile Include="Angular\src\app\search-product\search-product.component.spec.ts" />
+    <TypeScriptCompile Include="Angular\src\app\search-product\search-product.component.ts" />
+    <TypeScriptCompile Include="Angular\src\app\search-supplier\search-supplier.component.spec.ts" />
+    <TypeScriptCompile Include="Angular\src\app\search-supplier\search-supplier.component.ts" />
+    <TypeScriptCompile Include="Angular\src\app\seo.service.spec.ts" />
+    <TypeScriptCompile Include="Angular\src\app\seo.service.ts" />
+    <TypeScriptCompile Include="Angular\src\app\shared\auto-focus\auto-focus.directive.spec.ts" />
+    <TypeScriptCompile Include="Angular\src\app\shared\auto-focus\auto-focus.directive.ts" />
+    <TypeScriptCompile Include="Angular\src\app\shared\digit-only\digit-only.directive.ts" />
+    <TypeScriptCompile Include="Angular\src\app\shared\helpers\StorageHelper.ts" />
+    <TypeScriptCompile Include="Angular\src\app\shared\models\emailSupplier\EmailSupplier.ts" />
+    <TypeScriptCompile Include="Angular\src\app\shared\models\login\ILogin.ts" />
+    <TypeScriptCompile Include="Angular\src\app\shared\models\optimizeProduct\EnumCategoryType.ts" />
+    <TypeScriptCompile Include="Angular\src\app\shared\models\optimizeProduct\EnumKeywordType.ts" />
+    <TypeScriptCompile Include="Angular\src\app\shared\models\optimizeProduct\IProductKeywords.ts" />
+    <TypeScriptCompile Include="Angular\src\app\shared\models\optimizeProduct\OptimizeProduct.ts" />
+    <TypeScriptCompile Include="Angular\src\app\shared\models\optimizeProduct\ProductCategory.ts" />
+    <TypeScriptCompile Include="Angular\src\app\shared\models\searchProduct\EnumProductStatus.ts" />
+    <TypeScriptCompile Include="Angular\src\app\shared\models\searchProduct\EnumSeoStatus.ts" />
+    <TypeScriptCompile Include="Angular\src\app\shared\models\searchProduct\FacetTerms.ts" />
+    <TypeScriptCompile Include="Angular\src\app\shared\models\searchProduct\SearchFilter.ts" />
+    <TypeScriptCompile Include="Angular\src\app\shared\models\searchProduct\SearchFilterParam.ts" />
+    <TypeScriptCompile Include="Angular\src\app\shared\models\searchProduct\SearchProduct.ts" />
+    <TypeScriptCompile Include="Angular\src\app\shared\models\searchSuppliers\ISearchSuppliers.ts" />
+    <TypeScriptCompile Include="Angular\src\app\shared\no-whitespace\no-whitespace.directive.ts" />
+    <TypeScriptCompile Include="Angular\src\app\shared\no-whitespace\no-whitespace.validator.spec.ts" />
+    <TypeScriptCompile Include="Angular\src\app\shared\no-whitespace\no-whitespace.validator.ts" />
+    <TypeScriptCompile Include="Angular\src\app\shared\page\page.component.spec.ts" />
+    <TypeScriptCompile Include="Angular\src\app\shared\page\page.component.ts" />
+    <TypeScriptCompile Include="Angular\src\app\shared\services\category.service.spec.ts" />
+    <TypeScriptCompile Include="Angular\src\app\shared\services\category.service.ts" />
+    <TypeScriptCompile Include="Angular\src\app\shared\services\pager.service.spec.ts" />
+    <TypeScriptCompile Include="Angular\src\app\shared\services\pager.service.ts" />
+    <TypeScriptCompile Include="Angular\src\app\shared\services\supplier.service.spec.ts" />
+    <TypeScriptCompile Include="Angular\src\app\shared\services\supplier.service.ts" />
+    <TypeScriptCompile Include="Angular\src\environments\environment.prod.ts" />
+    <TypeScriptCompile Include="Angular\src\environments\environment.ts" />
+    <TypeScriptCompile Include="Angular\src\main.ts" />
+    <TypeScriptCompile Include="Angular\src\polyfills.ts" />
+    <TypeScriptCompile Include="Angular\src\test.ts" />
   </ItemGroup>
   <PropertyGroup>
     <VisualStudioVersion Condition="'$(VisualStudioVersion)' == ''">10.0</VisualStudioVersion>

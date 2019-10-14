@@ -6,7 +6,8 @@ using System.Web.Mvc;
 
 namespace SEOWorkflow.Controllers
 {
-    public class HomeController : Controller
+    //[Authorize]
+    public class HomeController : BaseController
     {
         // GET: Home
         public ActionResult Index()

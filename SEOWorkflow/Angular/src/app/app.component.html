@@ -1,0 +1,32 @@
+<section class="container-fluid h-100">
+    <div class="row esp-header" *ngIf="showHead">
+        <div class="col-12 text-right main-nav">
+            <button class="float-left esp-breadcrumb"><i class="material-icons">
+                    menu
+                </i></button>
+            <a href="#/searchSupplier">EIT Dashboard</a>
+
+            <a href="" class="dropdown" id="dropdownMenuButton" data-toggle="dropdown"><i class="material-icons">
+                    account_circle
+                </i>
+                <!-- Hello James
+                    NQ: Commented out and will be added back when user api returns this info  -->
+            </a>
+            <div class="dropdown-menu">
+                <button class="logout-but" (click)="logout()"> Logout</button>
+            </div>
+        </div>
+    </div>
+    <router-outlet></router-outlet>
+
+</section>
+<!--<section class="esp-footer left pt-2">
+    <div class="col-8 mx-auto">
+        <h6>Have questions?</h6>
+       <a href="#" class="mr-2">Product Support</a>
+       <a href="#">Feedback</a>
+   
+   
+    </div>
+    
+</section>-->
