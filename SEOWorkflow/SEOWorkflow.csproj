@@ -67,6 +67,9 @@
     <Reference Include="CastIron.Sql, Version=0.7.1.0, Culture=neutral, processorArchitecture=MSIL">
       <HintPath>..\packages\CastIron.Sql.0.7.1\lib\net45\CastIron.Sql.dll</HintPath>
     </Reference>
+    <Reference Include="Dapper, Version=2.0.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\packages\Dapper.2.0.30\lib\net461\Dapper.dll</HintPath>
+    </Reference>
     <Reference Include="jose-jwt, Version=2.4.0.0, Culture=neutral, processorArchitecture=MSIL">
       <HintPath>..\packages\jose-jwt.2.4.0\lib\net461\jose-jwt.dll</HintPath>
     </Reference>
@@ -185,6 +188,9 @@
       <HintPath>..\packages\System.Console.4.3.0\lib\net46\System.Console.dll</HintPath>
       <Private>True</Private>
       <Private>True</Private>
+    </Reference>
+    <Reference Include="System.Data.SqlClient, Version=4.6.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL">
+      <HintPath>..\packages\System.Data.SqlClient.4.7.0\lib\net461\System.Data.SqlClient.dll</HintPath>
     </Reference>
     <Reference Include="System.Diagnostics.DiagnosticSource, Version=4.0.3.0, Culture=neutral, PublicKeyToken=cc7b13ffcd2ddd51, processorArchitecture=MSIL">
       <HintPath>..\packages\System.Diagnostics.DiagnosticSource.4.5.0\lib\net46\System.Diagnostics.DiagnosticSource.dll</HintPath>
@@ -507,9 +513,9 @@
     <Content Include="WebConnectionStrings.config" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\ASI.Contracts.SEOWorkflow\ASI.Contracts.SEOWorkflow.csproj">
+    <ProjectReference Include="..\ASI.Contracts.SEOWorkflow\SEODomain.csproj">
       <Project>{92746213-128e-4459-8c7b-160782d72723}</Project>
-      <Name>ASI.Contracts.SEOWorkflow</Name>
+      <Name>SEODomain</Name>
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>

@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, ViewChild } from '@angular/core';
 import { Router } from '@angular/router';
 import { SeoService } from '../seo.service';
 import { OptimizeProduct } from '../shared/models/optimizeProduct/OptimizeProduct';
@@ -7,7 +7,6 @@ import { NgbModalOptions, NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import { ProductCategoryModalComponent } from '../modals/product-category-modal/product-category-modal.component';
 import { CategoryService } from '../shared/services/category.service';
 import { IProductKeywords } from '../shared/models/optimizeProduct/IProductKeywords';
-import { SearchProduct } from '../shared/models/searchProduct/SearchProduct';
 import { SupplierService } from '../shared/services/supplier.service';
 import { ISupplier } from '../shared/models/searchSuppliers/ISearchSuppliers';
 import { ClearAllModalComponent } from '../modals/clear-all-modal/clear-all-modal.component';
@@ -16,6 +15,8 @@ import { EnumKeywordType } from '../shared/models/optimizeProduct/EnumKeywordTyp
 import { EnumCategoryType } from '../shared/models/optimizeProduct/EnumCategoryType';
 import { Observable } from 'rxjs';
 import { debounceTime, distinctUntilChanged, map } from 'rxjs/operators';
+import { NgForm } from '@angular/forms';
+import { SaveProductModalComponent } from '../modals/save-product-modal/save-product-modal.component';
 
 
 @Component({
@@ -28,6 +29,7 @@ export class ProductOptimizationComponent implements OnInit {
   externalProductId: string;
   currentProduct: OptimizeProduct;
   seoProduct: OptimizeProduct;
+  originalSeoProduct: OptimizeProduct;
   seoStausEnum = EnumSeoStatus;
   supplier: ISupplier;
   productKeywords: string;
@@ -41,12 +43,11 @@ export class ProductOptimizationComponent implements OnInit {
   hasNextProduct: boolean;
   hasPreviousProduct: boolean;
   isNextOrPreviousClick: boolean;
-
+  //@ViewChild('optimizeForm', {static: false}) ngForm: NgForm;
 
   allExternalProductIds: string[] = [];
   productCategories: ProductCategory[] = [];
   selectedCategories: ProductCategory[] = [];
-  searchProducts: SearchProduct[] = [];
   themes: string[] = [];
 
   constructor(
@@ -61,13 +62,14 @@ export class ProductOptimizationComponent implements OnInit {
     this.getAllThemes();
     this.supplier = this.supplierService.getSupplier();
     this.populateProductsData();
+    // this.ngForm.form.valueChanges.subscribe(x => {
+    //   console.log(x);
+    // });
   }
 
   populateProductsData() {
     this.InitializeProductsData();
-    this.searchProducts = JSON.parse(localStorage.getItem('searchProducts')).map((products) => new SearchProduct(products));
-
-    this.allExternalProductIds = this.searchProducts.map((product) => product.ExternalProductId).toString().split(',');
+    this.allExternalProductIds = JSON.parse(localStorage.getItem('allExternalProductIds'));
 
     if (!this.isNextOrPreviousClick) {
       this.externalProductId = localStorage.getItem('selectedExternalProductId');
@@ -83,8 +85,8 @@ export class ProductOptimizationComponent implements OnInit {
   }
 
   InitializeProductsData() {
-    this.seoProduct = new OptimizeProduct("", 0, "", "", "");
-    this.currentProduct = new OptimizeProduct("", 0, "", "", "");
+    this.seoProduct = new OptimizeProduct("", 0, "", "", "", "");
+    this.currentProduct = new OptimizeProduct("", 0, "", "", "", "");
   }
 
   getSeoProduct(externalProductId: string) {
@@ -97,6 +99,7 @@ export class ProductOptimizationComponent implements OnInit {
 
         this.hasSeoProductData = true;
         this.seoProduct = product;
+        this.originalSeoProduct = new OptimizeProduct(product.ExternalProductId, product.CompanyId, product.Name, product.Description, product.Summary, product.PrimaryImageURL);
         this.loadSeoProduct();
       }
       else {
@@ -109,20 +112,16 @@ export class ProductOptimizationComponent implements OnInit {
   getCurrentProduct(externalProductId: string) {
     this.seoService.getCurrentProduct(externalProductId, this.supplier.CompanyId).subscribe(product => {
       if (product) {
-        let filteredProduct = this.searchProducts.filter(function (product) {
-          return product.ExternalProductId == externalProductId;
-        });
+        this.currentProduct = product;
 
         if ("ProductThemes" in product) {
           this.hasProductThemes = true;
         }
 
-        product.PrimaryImageUrl = filteredProduct[0].PrimaryImageUrl;
-        this.currentProduct = product;
-
         if (!this.hasSeoProductData) {
           this.currentProduct.SEOStatus = this.seoStausEnum.REDY;
-          this.seoProduct = new OptimizeProduct(product.ExternalProductId, product.CompanyId, product.Name, product.Description, product.Summary);
+          this.seoProduct = new OptimizeProduct(product.ExternalProductId, product.CompanyId, product.Name, product.Description, product.Summary, product.PrimaryImageURL);
+          this.originalSeoProduct = new OptimizeProduct(product.ExternalProductId, product.CompanyId, product.Name, product.Description, product.Summary, product.PrimaryImageURL);
           this.seoProduct.ProductCategories = this.currentProduct.ProductCategories;
           this.loadSeoProduct();
         }
@@ -146,7 +145,7 @@ export class ProductOptimizationComponent implements OnInit {
 
     this.loadProductCategories(this.seoProduct);
 
-    if (this.seoProduct.ProductCategories.length > 0) {
+    if ((this.seoProduct.ProductCategories) && (this.seoProduct.ProductCategories.length > 0)) {
       this.seoProduct.ProductCategories = this.seoProduct.ProductCategories.filter(function (category) {
         return category.Type !== EnumCategoryType.AD;
       });
@@ -165,7 +164,7 @@ export class ProductOptimizationComponent implements OnInit {
   }
 
   loadProductCategories(product: OptimizeProduct) {
-    if (product.ProductCategories.length > 0) {
+    if ((product.ProductCategories) && (product.ProductCategories.length > 0)) {
       product.ProductCategories = product.ProductCategories.sort(function (a, b) {
         var aType = a.Type;
         var bType = b.Type;
@@ -202,6 +201,17 @@ export class ProductOptimizationComponent implements OnInit {
     }
   }
 
+  getProductsData(isNextProduct: boolean, optimizeForm: NgForm) {
+    optimizeForm.reset();
+
+    if (this.isSeoProductModified()) {
+      this.openCanSaveProduct(isNextProduct);
+    }
+    else {
+      this.getNextOrPreviousProduct(isNextProduct);
+    }
+  }
+
   getNextOrPreviousProduct(isNextProduct: boolean) {
     let currentIndex = this.allExternalProductIds.indexOf(this.externalProductId);
 
@@ -214,6 +224,7 @@ export class ProductOptimizationComponent implements OnInit {
       this.externalProductId = this.allExternalProductIds[currentIndex - 1];
     }
 
+    localStorage.setItem('selectedExternalProductId', this.externalProductId);
     this.populateProductsData();
     this.router.navigate(['/optimizeProduct']);
   }
@@ -230,6 +241,27 @@ export class ProductOptimizationComponent implements OnInit {
     if (this.allExternalProductIds[index + 1]) {
       this.hasNextProduct = true;
     }
+  }
+
+  openCanSaveProduct(isNextProduct: boolean) {
+    let options: NgbModalOptions = { backdrop: 'static', size: 'lg', scrollable: true, centered: true };
+    const canSaveProductModal = this.modalService.open(SaveProductModalComponent, options);
+
+    canSaveProductModal.result.then((canSave) => {
+      if (canSave) {
+        this.saveSeoProduct();
+        this.getNextOrPreviousProduct(isNextProduct);
+      }
+    }).catch(error => {
+      canSaveProductModal.dismiss();
+    });
+  }
+
+  isSeoProductModified(): boolean {
+    return (
+      (this.seoProduct.Description === this.originalSeoProduct.Description) &&
+      (this.seoProduct.Summary === this.originalSeoProduct.Summary)
+    );
   }
 
   getAllCategories() {
@@ -343,6 +375,9 @@ export class ProductOptimizationComponent implements OnInit {
 
   onClick() {
     this.currentProduct.SEOStatus = this.seoStausEnum.IPRS;
+  }
+  testpopup() {
+    alert("test");
   }
 
   formatter = (result: string) => result.toUpperCase();

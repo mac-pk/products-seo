@@ -1,3 +1,4 @@
+
 <div class="row esp-sub-header pt-2">
     <div *ngIf="isLoading" class="progress-img d-flex text-center">
         <img src="assets/images/esp-loader-genreal.gif" class="justify-content-center align-self-center mx-auto">
@@ -13,14 +14,14 @@
         <div class=" float-lg-right float-md-left">
             <div class="col"> <a href="#/searchProduct" class="mr-3">Manage My Products</a>
                 <span *ngIf="hasPreviousProduct">
-                    <a (click)="getNextOrPreviousProduct(false)" href="#/optimizeProduct" class="mr-3">Previous
+                    <a (click)="getProductsData(false, optimizeForm)" href="#/optimizeProduct" class="mr-3">Previous
                         Product</a>
                 </span>
                 <span *ngIf="!hasPreviousProduct">
                     <a class="mr-3">Previous Product</a>
                 </span>
                 <span *ngIf="hasNextProduct">
-                    <a (click)="getNextOrPreviousProduct(true)" href="#/optimizeProduct" class="mr-3">Next Product</a>
+                    <a (click)="getProductsData(true, optimizeForm)" href="#/optimizeProduct" class="mr-3">Next Product</a>
                 </span>
                 <span *ngIf="!hasNextProduct">
                     <a class="mr-3">Next Product</a>
@@ -43,7 +44,7 @@
                 <div class="p-0">
                     <div class="figure product-image-thumb">
                         <img style="width:114px;height:126px;"
-                            src="{{ currentProduct.PrimaryImageUrl && currentProduct.PrimaryImageUrl !== '' ? currentProduct.PrimaryImageUrl : './assets/images/no_image.png' }}">
+                            src="{{ currentProduct.PrimaryImageURL && currentProduct.PrimaryImageURL !== '' ? currentProduct.PrimaryImageURL : './assets/images/no_image.png' }}">
                     </div>
                 </div>
                 <div class="p-3">
@@ -97,7 +98,7 @@
                         <div class="form-group">
                             <textarea [(ngModel)]="seoProduct.Description" #description="ngModel" name="description"
                                 required class="form-control" rows="4" maxlength="800" (click)="onClick()"></textarea>
-                            <label class="label-light">{{seoProduct.Description.length}} of 800 characters</label>
+                            <label class="label-light">{{seoProduct.Description ? seoProduct.Description.length : 0}} of 800 characters</label>
                             <div *ngIf="description.invalid && (description.dirty || description.touched)"
                                 class="error text-danger">
                                 <div *ngIf="description.errors.required">
@@ -110,7 +111,7 @@
                         <div class="form-group">
                             <textarea [(ngModel)]="seoProduct.Summary" #summary="ngModel" name="summary" required
                                 class="form-control" rows="Z" maxlength="130"></textarea>
-                            <label class="label-light">{{seoProduct.Summary?.length}} of 130 characters</label>
+                            <label class="label-light">{{seoProduct.Summary ? seoProduct.Summary.length : 0}} of 130 characters</label>
                             <div *ngIf="summary.invalid && (summary.dirty || summary.touched)"
                                 class="error text-danger">
                                 <div *ngIf="summary.errors.required">
@@ -147,7 +148,7 @@
                             <span class="d-flex justify-content-between"><label class="label-light ">Seperate keyword
                                     with a
                                     comma</label>
-                                <button type="button" [disabled]="seoProduct.SeoKeywords.length == 0"
+                                <button type="button" [disabled]="((seoProduct.SeoKeywords == null) || (seoProduct.SeoKeywords.length == 0))"
                                     (click)="openClearAll(true)" class="btn btn-blue my-1">Clear
                                     All</button>
                             </span>
@@ -163,7 +164,7 @@
                         <p class="label-black mb-0">Product Theme:</p>
                         <div class="form-group">
                             <span class="d-flex justify-content-between float-right">
-                                <button type="button" [disabled]="seoProduct.ProductThemes.length == 0"
+                                <button type="button" [disabled]="((seoProduct.ProductThemes == null) || (seoProduct.ProductThemes.length == 0))"
                                     (click)="openClearAll(false)" class="btn btn-blue my-1">Clear
                                     All</button>
                             </span>
@@ -173,9 +174,10 @@
                                     <i class="material-icons">close</i>
                                 </a>
                             </span>
-                            <input name="searchtxt" id="searchtxt" type="text" class="form-control keyword-sel-text-bx"
+                            <input  name="searchtxt" id="searchtxt" type="text" class="form-control keyword-sel-text-bx"
                                 [(ngModel)]="searchTheme" [ngbTypeahead]="search" [resultFormatter]="formatter"
                                 (selectItem)="themeSelected($event)" />
+                                
                         </div>
                         <hr>
                         <div class="form-group mt-2 col-2 p-0">
@@ -191,10 +193,19 @@
                 <div class="col-12 text-lg-right text-md-right text-sm-right text-center mt-1 ">
                     <button type="button" class="btn btn-blue cancel my-1 mr-2">Cancel</button>
                     <button type="button" class="btn btn-blue my-1 mr-2">Done</button>
-                    <button type="submit" class="btn btn-blue my-1">Save</button>
+                    <button type="submit" [disabled]="!optimizeForm.dirty" class="btn btn-blue my-1 show-toast">Save</button>
                 </div>
                 <div class="clearfix"></div>
             </form>
         </div>
     </div>
 </div>
+<div class="toast esp-toast pr-3" id="myToast">
+
+        <div class="toast-body p-1">
+      <i class="material-icons esp-save-sucess-ico float-left mr-2">
+done
+</i>
+            Product is saved
+        </div>
+    </div>

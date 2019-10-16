@@ -6,7 +6,7 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Xml.Serialization;
 
-namespace ASI.Contracts.SEOWorkflow.Models
+namespace SEODomain
 {
     [XmlRoot("SEOSelectedProductKeywords", Namespace = "")]
     public class SEOSelectedProductKeywords

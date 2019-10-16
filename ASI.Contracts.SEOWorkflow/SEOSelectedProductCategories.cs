@@ -6,10 +6,10 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Xml.Serialization;
 
-namespace ASI.Contracts.SEOWorkflow.Models
+namespace SEODomain
 {
     [XmlRoot("SEOSelectedProductCategories", Namespace = "")]
-    public class SEOSelectedProductCategories
+    public class ProductCategory
     {
 
         [JsonProperty(Order = 1)]
@@ -19,5 +19,13 @@ namespace ASI.Contracts.SEOWorkflow.Models
         [JsonProperty(Order = 2)]
         [XmlElement(Order = 2)]
         public string Type { get; set; }
+
+        [JsonProperty(Order = 3)]
+        [XmlElement(Order = 3)]
+        public bool IsSelected { get; set; }
+
+        [JsonProperty(Order = 4)]
+        [XmlElement(Order = 4)]
+        public bool IsDisabled { get; set; }
     }
 }

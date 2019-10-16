@@ -94,7 +94,7 @@ export class SeoService {
 
   getSeoProduct(externalProductId: string): Observable<OptimizeProduct> {
     return this.http
-      .get(environment.seoBaseUrl + "Product/" + externalProductId)
+      .get(environment.seoBaseUrl + "product/" + externalProductId)
       .pipe(map((response: any) => {
         return response;
       })
@@ -103,12 +103,12 @@ export class SeoService {
 
   saveSeoProduct(seoProduct: OptimizeProduct, isNewProduct: boolean): Observable<any> {
     if (isNewProduct) {
-      return this.http.post(environment.seoBaseUrl + "Product", seoProduct, this.httpOptions).pipe(
+      return this.http.post(environment.seoBaseUrl + "product/insert", seoProduct, this.httpOptions).pipe(
         tap((product: OptimizeProduct) => this.log(`Insert product with ExternalProductId=${product.ExternalProductId}`)),
         catchError(this.handleError<any>('insertProduct'))
       );
     } else {
-      return this.http.put(environment.seoBaseUrl + "Product", seoProduct, this.httpOptions).pipe(
+      return this.http.put(environment.seoBaseUrl + "product/update", seoProduct, this.httpOptions).pipe(
         tap((product: OptimizeProduct) => this.log(`Update product with ExternalProductId=${product.ExternalProductId}`)),
         catchError(this.handleError<any>('updateProduct'))
       );

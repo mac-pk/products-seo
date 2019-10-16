@@ -331,3 +331,48 @@ ASALocalRun/
 
 # Ignore Angular Folder
 SEOWorkflow/Angular/node_modules
+
+# Ignore Angular output Folder
+SEOWorkflow/Angular/dist
+
+# Ignore Angular Scripts Folder
+SEOWorkflow/Scripts/asi
+/SEOWorkflow/Scripts/asi/assets/asiLogo-login.png
+/SEOWorkflow/Scripts/asi/assets/esp.png
+/SEOWorkflow/Scripts/asi/assets/image.png
+/SEOWorkflow/Scripts/asi/assets/images/asiLogo-login.png
+/SEOWorkflow/Scripts/asi/assets/images/esp-loader-genreal.gif
+/SEOWorkflow/Scripts/asi/assets/images/image.png
+/SEOWorkflow/Scripts/asi/assets/images/no_image.png
+/SEOWorkflow/Scripts/asi/assets/json/facetSearch.json
+/SEOWorkflow/Scripts/asi/assets/json/productCategory.json
+/SEOWorkflow/Scripts/asi/assets/json/searchproduct.json
+/SEOWorkflow/Scripts/asi/favicon.ico
+/SEOWorkflow/Scripts/asi/index.html
+/SEOWorkflow/Scripts/asi/main.js
+/SEOWorkflow/Scripts/asi/main.js.map
+/SEOWorkflow/Scripts/asi/polyfills.js
+/SEOWorkflow/Scripts/asi/polyfills.js.map
+/SEOWorkflow/Scripts/asi/runtime.js
+/SEOWorkflow/Scripts/asi/runtime.js.map
+/SEOWorkflow/Scripts/asi/styles.js
+/SEOWorkflow/Scripts/asi/styles.js.map
+/SEOWorkflow/Scripts/asi/vendor.js
+/SEOWorkflow/Scripts/asi/vendor.js.map
+/SEOWorkflow/Scripts/asi/index.html
+/SEOWorkflow/Scripts/asi/main.js
+/SEOWorkflow/Scripts/asi/main.js.map
+/SEOWorkflow/Scripts/asi/polyfills.js
+/SEOWorkflow/Scripts/asi/polyfills.js.map
+/SEOWorkflow/Scripts/asi/runtime.js
+/SEOWorkflow/Scripts/asi/runtime.js.map
+/SEOWorkflow/Scripts/asi/styles.js
+/SEOWorkflow/Scripts/asi/styles.js.map
+/SEOWorkflow/Scripts/asi/vendor.js
+/SEOWorkflow/Scripts/asi/vendor.js.map
+/SEOWorkflow/Scripts/asi/main.js
+/SEOWorkflow/Scripts/asi/index.html
+/SEOWorkflow/Scripts/asi/index.html
+/SEOWorkflow/Scripts/asi/main.js
+SEOWorkflow/Scripts/asi/main.js
+SEOWorkflow/Scripts/asi/runtime.js

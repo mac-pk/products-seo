@@ -1,7 +1,8 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
+﻿using ASI.Services.WebApi;
+using Microsoft.AspNetCore.Mvc.Routing;
+using Newtonsoft.Json.Serialization;
 using System.Web.Http;
+using System.Web.Http.Routing;
 
 namespace SEOWorkflowAPI
 {
@@ -11,16 +12,27 @@ namespace SEOWorkflowAPI
         {
             // Web API configuration and services
 
-            config.EnableCors();
-
             // Web API routes
+            // Web API routes with versioning
+            var constraintResolver = new DefaultInlineConstraintResolver
+            {
+                ConstraintMap =
+                {
+                    ["apiVersion"] = typeof(ApiVersionRouteConstraint)
+                }
+            };
             config.MapHttpAttributeRoutes();
+            config.AddApiVersioning(options =>
+            {
+                options.AssumeDefaultVersionWhenUnspecified = true;
+            });
 
-            config.Routes.MapHttpRoute(
-                name: "DefaultApi",
-                routeTemplate: "api/{controller}/{id}",
-                defaults: new { id = RouteParameter.Optional }
-            );
+            // Remove XML formatter
+            config.Formatters.JsonFormatter.SerializerSettings.ContractResolver = new DefaultContractResolver();
+            config.Formatters.Remove(config.Formatters.XmlFormatter);
+
+            // Enable CORS
+            config.EnableCors();
         }
     }
 }

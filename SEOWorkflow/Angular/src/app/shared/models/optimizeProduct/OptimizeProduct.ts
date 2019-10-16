@@ -7,13 +7,15 @@ export class OptimizeProduct {
         companyId: number,
         name: string,
         description: string,
-        summary: string
+        summary: string,
+        primaryImageURL: string
         ) {
         this.ExternalProductId = externalProductId;
         this.CompanyId = companyId;
         this.Name = name;
         this.Description = description;
         this.Summary = summary;
+        this.PrimaryImageURL = primaryImageURL; 
     };
     
     ExternalProductId: string;
@@ -26,6 +28,6 @@ export class OptimizeProduct {
     ProductCategories: ProductCategory[];
     SeoKeywords: string[] = [];
     SEOStatus: string;
-    PrimaryImageUrl: string = "";
+    PrimaryImageURL: string;
     AsiProdNo: string;
 }
