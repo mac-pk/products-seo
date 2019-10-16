@@ -1,11 +1,11 @@
-﻿using SEODataAccess;
-using SEODomain;
+﻿using SEOWorkflowDataAccess;
+using SEOWorkflowDomain;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 
-namespace SEOBusiness
+namespace SEOWorkflowBusiness
 {
     public class SeoService : ISeoService
     {

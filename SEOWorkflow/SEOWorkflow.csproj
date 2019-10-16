@@ -513,9 +513,9 @@
     <Content Include="WebConnectionStrings.config" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\ASI.Contracts.SEOWorkflow\SEODomain.csproj">
+    <ProjectReference Include="..\ASI.Contracts.SEOWorkflow\SEOWorkflowDomain.csproj">
       <Project>{92746213-128e-4459-8c7b-160782d72723}</Project>
-      <Name>SEODomain</Name>
+      <Name>SEOWorkflowDomain</Name>
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>

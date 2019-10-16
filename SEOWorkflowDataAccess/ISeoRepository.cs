@@ -3,15 +3,13 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-using SEODataAccess;
-using SEODomain;
+using SEOWorkflowDomain;
 
-namespace SEOBusiness
+namespace SEOWorkflowDataAccess
 {
-    public interface ISeoService
+    public interface ISeoRepository
     {
-        Product GetSeoProduct(string externalProductId);
-
         bool SaveSeoProduct(Product product, bool isNewProduct);
+        Product GetSeoProduct(string externalProductId);
     }
 }

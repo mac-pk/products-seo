@@ -4,10 +4,10 @@ using System.Data;
 using System.Data.SqlClient;
 using System.Linq;
 using Dapper;
-using SEODataAccess;
-using SEODomain;
+using SEOWorkflowDataAccess;
+using SEOWorkflowDomain;
 
-namespace SEODataAccess
+namespace SEOWorkflowDataAccess
 {
     public class SeoRepository : ISeoRepository
     {

@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using System.Xml.Serialization;
 
-namespace SEODomain
+namespace SEOWorkflowDomain
 {
     [XmlRoot("Product", Namespace = "")]
     public class Product

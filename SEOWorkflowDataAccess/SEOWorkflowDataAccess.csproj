@@ -7,8 +7,8 @@
     <ProjectGuid>{9B8FE0BF-9B95-47EA-BA46-0EDA4B2590E4}</ProjectGuid>
     <OutputType>Library</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>SEO_DataAccess</RootNamespace>
-    <AssemblyName>SEO-DataAccess</AssemblyName>
+    <RootNamespace>SEOWorkflowDataAccess</RootNamespace>
+    <AssemblyName>SEOWorkflowDataAccess</AssemblyName>
     <TargetFrameworkVersion>v4.7.2</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
     <Deterministic>true</Deterministic>
@@ -31,8 +31,8 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
-    <Reference Include="Dapper">
-      <HintPath>..\packages\Dapper.2.0.4\lib\netstandard2.0\Dapper.dll</HintPath>
+    <Reference Include="Dapper, Version=2.0.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\packages\Dapper.2.0.30\lib\net461\Dapper.dll</HintPath>
     </Reference>
     <Reference Include="System" />
     <Reference Include="System.configuration" />
@@ -50,10 +50,13 @@
     <Compile Include="SeoRepository.cs" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\ASI.Contracts.SEOWorkflow\SEODomain.csproj">
+    <ProjectReference Include="..\SEOWorkflowDomain\SEOWorkflowDomain.csproj">
       <Project>{92746213-128E-4459-8C7B-160782D72723}</Project>
-      <Name>SEODomain</Name>
+      <Name>SEOWorkflowDomain</Name>
     </ProjectReference>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="packages.config" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

@@ -1,5 +1,5 @@
-﻿using SEOBusiness;
-using SEODomain;
+﻿using SEOWorkflowBusiness;
+using SEOWorkflowDomain;
 using System.Web.Http;
 using System.Web.Http.Cors;
 
