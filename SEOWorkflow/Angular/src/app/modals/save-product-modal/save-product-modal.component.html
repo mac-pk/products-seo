@@ -1,4 +1,4 @@
-<div class="modal-header esp-modal-header">
+<div class="modal-header esp-modal-header" id="myModal">
         <h4 class="modal-title">Save</h4>
         <button type="button" class="close" aria-label="Close" (click)="close()">
             <span aria-hidden="true">&times;</span>
@@ -12,6 +12,6 @@
         </div>
     </div>
     <div class="modal-footer py-2">
-        <button type="submit" class="btn btn-blue my-1" (click)="saveProduct(true)">Yes</button> &nbsp;
+        <button type="submit" class="btn btn-blue my-1" (click)="saveProduct(true)" id="btnSaveProduct">Yes</button> &nbsp;
         <button type="submit" class="btn btn-blue my-1" (click)="saveProduct(false)">No</button>
     </div>

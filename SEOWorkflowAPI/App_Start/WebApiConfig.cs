@@ -1,7 +1,8 @@
-﻿using ASI.Services.WebApi;
-using Microsoft.AspNetCore.Mvc.Routing;
+﻿using Microsoft.AspNetCore.Mvc.Routing;
 using Newtonsoft.Json.Serialization;
+using SEOWorkflowAPI.DependencyResolution;
 using System.Web.Http;
+using System.Web.Http.Dispatcher;
 using System.Web.Http.Routing;
 
 namespace SEOWorkflowAPI
@@ -11,6 +12,7 @@ namespace SEOWorkflowAPI
         public static void Register(HttpConfiguration config)
         {
             // Web API configuration and services
+            config.Services.Replace(typeof(IHttpControllerActivator), new ServiceActivator(config));
 
             // Web API routes
             // Web API routes with versioning

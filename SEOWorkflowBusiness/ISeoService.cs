@@ -1,10 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using SEOWorkflowDataAccess;
-using SEOWorkflowDomain;
+﻿using SEOWorkflowDomain;
 
 namespace SEOWorkflowBusiness
 {
@@ -12,6 +6,6 @@ namespace SEOWorkflowBusiness
     {
         Product GetSeoProduct(string externalProductId);
 
-        bool SaveSeoProduct(Product product, bool isNewProduct);
+        int SaveSeoProduct(Product product, bool isNewProduct);
     }
 }

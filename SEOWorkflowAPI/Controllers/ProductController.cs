@@ -18,10 +18,9 @@ namespace SEOProductAPI.Controllers
 
         #region constructors
 
-        public ProductController() //(ISeoService service)
+        public ProductController(ISeoService service)
         {
-            //_service = service;
-            _service = new SeoService();
+            _service = service;
         }
 
         #endregion
@@ -37,8 +36,8 @@ namespace SEOProductAPI.Controllers
             return Ok(_service.GetSeoProduct(externalProductId));
         }
 
-        // POST: api/product
-        //[Route("Product")]
+        // POST: api/product/insert
+        [Route("insert")]
         [HttpPost]
         //[Authorize(Roles = "Administrators")]
         [AllowAnonymous]
@@ -47,7 +46,7 @@ namespace SEOProductAPI.Controllers
             return Ok(_service.SaveSeoProduct(product, true));
         }
 
-        // PUT: api/product
+        // PUT: api/product/update
         [Route("update")]
         [HttpPut]
         [AllowAnonymous]

@@ -1,4 +1,4 @@
-import { Component, OnInit, ViewChild } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
 import { SeoService } from '../seo.service';
 import { OptimizeProduct } from '../shared/models/optimizeProduct/OptimizeProduct';
@@ -43,7 +43,7 @@ export class ProductOptimizationComponent implements OnInit {
   hasNextProduct: boolean;
   hasPreviousProduct: boolean;
   isNextOrPreviousClick: boolean;
-  //@ViewChild('optimizeForm', {static: false}) ngForm: NgForm;
+  hasSavedSuccessfully: boolean;
 
   allExternalProductIds: string[] = [];
   productCategories: ProductCategory[] = [];
@@ -62,9 +62,6 @@ export class ProductOptimizationComponent implements OnInit {
     this.getAllThemes();
     this.supplier = this.supplierService.getSupplier();
     this.populateProductsData();
-    // this.ngForm.form.valueChanges.subscribe(x => {
-    //   console.log(x);
-    // });
   }
 
   populateProductsData() {
@@ -73,9 +70,7 @@ export class ProductOptimizationComponent implements OnInit {
 
     if (!this.isNextOrPreviousClick) {
       this.externalProductId = localStorage.getItem('selectedExternalProductId');
-
       let currentIndex = this.allExternalProductIds.indexOf(this.externalProductId);
-
       this.hasNextOrPreviousProduct(currentIndex);
     }
 
@@ -84,9 +79,29 @@ export class ProductOptimizationComponent implements OnInit {
     this.getCurrentProduct(this.externalProductId);
   }
 
+  saveSeoProduct(isSave: boolean) {
+    this.isLoading = true;
+
+    if (!isSave) {
+      this.seoProduct.SEOStatus = this.seoStausEnum.SEOD;
+    }
+
+    this.seoService.saveSeoProduct(this.seoProduct, this.IsNewProduct()).subscribe(productId => {
+      this.hasSavedSuccessfully = false;
+
+      if (productId > 0) {
+        this.hasSavedSuccessfully = true;
+        this.isLoading = false;
+        this.seoProduct.ID = productId;
+        this.createOriginalSeoProduct();
+      }
+    });
+  }
+
   InitializeProductsData() {
-    this.seoProduct = new OptimizeProduct("", 0, "", "", "", "");
-    this.currentProduct = new OptimizeProduct("", 0, "", "", "", "");
+    this.themeSearchFilter = "Start With";
+    this.seoProduct = new OptimizeProduct(0, "", 0, "", "", "", "", "", "");
+    this.currentProduct = new OptimizeProduct(0, "", 0, "", "", "", "", "", "");
   }
 
   getSeoProduct(externalProductId: string) {
@@ -99,7 +114,6 @@ export class ProductOptimizationComponent implements OnInit {
 
         this.hasSeoProductData = true;
         this.seoProduct = product;
-        this.originalSeoProduct = new OptimizeProduct(product.ExternalProductId, product.CompanyId, product.Name, product.Description, product.Summary, product.PrimaryImageURL);
         this.loadSeoProduct();
       }
       else {
@@ -120,8 +134,7 @@ export class ProductOptimizationComponent implements OnInit {
 
         if (!this.hasSeoProductData) {
           this.currentProduct.SEOStatus = this.seoStausEnum.REDY;
-          this.seoProduct = new OptimizeProduct(product.ExternalProductId, product.CompanyId, product.Name, product.Description, product.Summary, product.PrimaryImageURL);
-          this.originalSeoProduct = new OptimizeProduct(product.ExternalProductId, product.CompanyId, product.Name, product.Description, product.Summary, product.PrimaryImageURL);
+          this.seoProduct = new OptimizeProduct(product.ID, product.ExternalProductId, product.CompanyId, product.Name, product.Description, product.Summary, product.SEOStatus, product.PrimaryImageURL, product.AsiProdNo);
           this.seoProduct.ProductCategories = this.currentProduct.ProductCategories;
           this.loadSeoProduct();
         }
@@ -137,6 +150,12 @@ export class ProductOptimizationComponent implements OnInit {
   }
 
   loadSeoProduct() {
+    if (this.seoProduct.SeoKeywords.toString() == '') {
+      this.seoProduct.SeoKeywords = [];
+    }
+    if (this.seoProduct.ProductThemes == null) {
+      this.seoProduct.ProductThemes = [];
+    }
     if (!this.hasSeoProductData) {
       this.seoProduct.SeoKeywords = this.currentProduct.ProductKeywords.filter(function (keyword) {
         return keyword.Type == EnumKeywordType.SEO;
@@ -145,7 +164,7 @@ export class ProductOptimizationComponent implements OnInit {
 
     this.loadProductCategories(this.seoProduct);
 
-    if ((this.seoProduct.ProductCategories) && (this.seoProduct.ProductCategories.length > 0)) {
+    if ((this.productCategories.length > 0) && (this.seoProduct.ProductCategories) && (this.seoProduct.ProductCategories.length > 0)) {
       this.seoProduct.ProductCategories = this.seoProduct.ProductCategories.filter(function (category) {
         return category.Type !== EnumCategoryType.AD;
       });
@@ -161,49 +180,18 @@ export class ProductOptimizationComponent implements OnInit {
 
       this.categoryService.setCategories(this.seoProduct.ProductCategories);
     }
+
+    this.createOriginalSeoProduct();
   }
 
-  loadProductCategories(product: OptimizeProduct) {
-    if ((product.ProductCategories) && (product.ProductCategories.length > 0)) {
-      product.ProductCategories = product.ProductCategories.sort(function (a, b) {
-        var aType = a.Type;
-        var bType = b.Type;
-        var aValue = a.Value;
-        var bValue = b.Value;
-
-        if (aType == bType) {
-          return (aValue < bValue) ? -1 : (aValue > bValue) ? 1 : 0;
-        }
-        else {
-          return (bType < aType) ? -1 : 1;
-        }
-      });
-    }
+  createOriginalSeoProduct() {
+    this.originalSeoProduct = new OptimizeProduct(this.seoProduct.ID, this.seoProduct.ExternalProductId, this.seoProduct.CompanyId, this.seoProduct.Name, this.seoProduct.Description, this.seoProduct.Summary, this.seoProduct.SEOStatus, this.seoProduct.PrimaryImageURL, this.seoProduct.AsiProdNo);
+    this.originalSeoProduct.ProductCategories = Object.assign([], this.seoProduct.ProductCategories);
+    this.originalSeoProduct.SeoKeywords = Object.assign([], this.seoProduct.SeoKeywords);
+    this.originalSeoProduct.ProductThemes = Object.assign([], this.seoProduct.ProductThemes);
   }
 
-  loadAllProductKeywords(keywords: IProductKeywords[]) {
-    this.productKeywords = null;
-    this.seoKeywords = null;
-    this.adKeywords = null;
-
-    if (keywords.length > 0) {
-      this.productKeywords = keywords.filter(function (keyword) {
-        return keyword.Type == EnumKeywordType.PRODUCT;
-      }).map((keywords) => keywords.Value).toString();
-
-      this.seoKeywords = keywords.filter(function (keyword) {
-        return keyword.Type == EnumKeywordType.SEO;
-      }).map((keywords) => keywords.Value).toString();
-
-      this.adKeywords = keywords.filter(function (keyword) {
-        return keyword.Type == EnumKeywordType.AD;
-      }).map((keywords) => keywords.Value).toString();
-    }
-  }
-
-  getProductsData(isNextProduct: boolean, optimizeForm: NgForm) {
-    optimizeForm.reset();
-
+  getProductsData(isNextProduct: boolean) {
     if (this.isSeoProductModified()) {
       this.openCanSaveProduct(isNextProduct);
     }
@@ -249,19 +237,91 @@ export class ProductOptimizationComponent implements OnInit {
 
     canSaveProductModal.result.then((canSave) => {
       if (canSave) {
-        this.saveSeoProduct();
-        this.getNextOrPreviousProduct(isNextProduct);
+        this.saveSeoProduct(true);
       }
+
+      this.getNextOrPreviousProduct(isNextProduct);
     }).catch(error => {
       canSaveProductModal.dismiss();
     });
   }
 
   isSeoProductModified(): boolean {
-    return (
-      (this.seoProduct.Description === this.originalSeoProduct.Description) &&
-      (this.seoProduct.Summary === this.originalSeoProduct.Summary)
-    );
+    let result: boolean = false;
+
+    if (!((this.seoProduct == null) || (this.originalSeoProduct == null))) {
+      result = !(
+        (this.seoProduct.Description === this.originalSeoProduct.Description) &&
+        (this.seoProduct.Summary === this.originalSeoProduct.Summary) &&
+        (this.seoProduct.SEOStatus === this.originalSeoProduct.SEOStatus) &&
+        this.categoryObjectsAreSame(this.originalSeoProduct.ProductCategories, this.sortProductCategories(this.seoProduct.ProductCategories)) &&
+        (this.seoProduct.SeoKeywords.toString() === this.originalSeoProduct.SeoKeywords.toString()) &&
+        (this.seoProduct.ProductThemes.toString() === this.originalSeoProduct.ProductThemes.toString())
+      );
+    }
+
+    return result;
+  }
+
+  loadProductCategories(product: OptimizeProduct) {
+    if ((product.ProductCategories) && (product.ProductCategories.length > 0)) {
+      product.ProductCategories = this.sortProductCategories(product.ProductCategories);
+    }
+  }
+
+  sortProductCategories(productCategories: ProductCategory[]) {
+    return productCategories.sort(function (a, b) {
+      var aType = a.Type;
+      var bType = b.Type;
+      var aValue = a.Value;
+      var bValue = b.Value;
+
+      if (aType == bType) {
+        return (aValue < bValue) ? -1 : (aValue > bValue) ? 1 : 0;
+      }
+      else {
+        return (bType < aType) ? -1 : 1;
+      }
+    });
+  }
+
+  loadAllProductKeywords(keywords: IProductKeywords[]) {
+    this.productKeywords = null;
+    this.seoKeywords = null;
+    this.adKeywords = null;
+
+    if (keywords.length > 0) {
+      this.productKeywords = keywords.filter(function (keyword) {
+        return keyword.Type == EnumKeywordType.PRODUCT;
+      }).map((keywords) => keywords.Value).toString();
+
+      this.seoKeywords = keywords.filter(function (keyword) {
+        return keyword.Type == EnumKeywordType.SEO;
+      }).map((keywords) => keywords.Value).toString();
+
+      this.adKeywords = keywords.filter(function (keyword) {
+        return keyword.Type == EnumKeywordType.AD;
+      }).map((keywords) => keywords.Value).toString();
+    }
+  }
+
+  categoryObjectsAreSame(x, y) {
+    let objectsAreSame = true;
+
+    if (x.length === y.length) {
+      for (var propertyName in x) {
+        if ((x[propertyName].Value.toUpperCase() !== y[propertyName].Value.toUpperCase()) &&
+          (x[propertyName].Type !== y[propertyName].Type)) {
+          objectsAreSame = false;
+          break;
+        }
+      }
+    }
+    else {
+      objectsAreSame = false;
+    }
+
+    return objectsAreSame;
   }
 
   getAllCategories() {
@@ -287,9 +347,11 @@ export class ProductOptimizationComponent implements OnInit {
     productCategoryModal.componentInstance.inputProductCategories = this.productCategories;
     productCategoryModal.result.then((result) => {
       if (result === 'success') {
-        this.seoProduct.ProductCategories = this.categoryService.getCategories();
+        this.seoProduct.ProductCategories = this.sortProductCategories(this.categoryService.getCategories());
       }
-    }).catch(exc => { });
+    }).catch(error => {
+      productCategoryModal.dismiss();
+    });
   }
 
   removeCategory(categoryCode: string) {
@@ -300,8 +362,8 @@ export class ProductOptimizationComponent implements OnInit {
 
       this.selectedCategories.splice(selectedCategoryIndex, 1);
 
-      if (this.productCategories.find(x => x.Value == categoryCode)) {
-        let categoryIndex = this.productCategories.findIndex(x => x.Value == categoryCode);
+      if (this.productCategories.find(x => x.Value == categoryCode.toUpperCase())) {
+        let categoryIndex = this.productCategories.findIndex(x => x.Value.toUpperCase() == categoryCode.toUpperCase());
         this.productCategories[categoryIndex].IsSelected = false;
       }
 
@@ -329,6 +391,10 @@ export class ProductOptimizationComponent implements OnInit {
 
   enterKeyword(seoKewords: string) {
     let seoKeywordArray = seoKewords.split(',');
+
+    if (this.seoProduct.SeoKeywords.toString() == '') {
+      this.seoProduct.SeoKeywords = [];
+    }
 
     seoKeywordArray.forEach((keyword) => (this.seoProduct.SeoKeywords.push(keyword)));
     this.seoKeyword = "";
@@ -358,26 +424,19 @@ export class ProductOptimizationComponent implements OnInit {
           this.seoProduct.ProductThemes = [];
         }
       }
-    }).catch(exc => { });
-  }
-
-  //https://stackoverflow.com/questions/40503667/how-to-show-a-loader-for-3-sec-and-hide-in-angular-2
-  //http://jsfiddle.net/SUBnz/1/
-  //for implementing save successfully blur message
-  saveSeoProduct() {
-    this.isLoading = true;
-    this.seoService.saveSeoProduct(this.seoProduct, !this.hasSeoProductData).subscribe(saved => {
-      if (saved) {
-        this.isLoading = false;
-      }
+    }).catch(error => {
+      clearAllModal.dismiss();
     });
   }
 
-  onClick() {
-    this.currentProduct.SEOStatus = this.seoStausEnum.IPRS;
+  onSeoFieldClick() {
+    if (this.seoProduct.SEOStatus === this.seoStausEnum.REDY) {
+      this.seoProduct.SEOStatus = this.seoStausEnum.IPRS;
+    }
   }
-  testpopup() {
-    alert("test");
+
+  IsNewProduct(): boolean {
+    return (this.seoProduct.ID == null);
   }
 
   formatter = (result: string) => result.toUpperCase();
@@ -389,9 +448,12 @@ export class ProductOptimizationComponent implements OnInit {
       map(theme => theme === '' ? []
         : this.themeSearchFilter == 'Start With' ? this.themes.filter(v => v.toLowerCase().startsWith(theme.toLowerCase())).slice(0, 10) :
           this.themes.filter(v => v.toLowerCase().indexOf(theme.toLowerCase()) > -1).slice(0, 10))
-    )
+    );
 
   themeSelected($event) {
+    if (!this.seoProduct.ProductThemes) {
+      this.seoProduct.ProductThemes = [];
+    }
     this.seoProduct.ProductThemes.push($event.item);
   }
 }

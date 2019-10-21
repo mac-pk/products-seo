@@ -1,11 +1,9 @@
-﻿using System.Collections.Generic;
-using System.Configuration;
-using System.Data;
-using System.Data.SqlClient;
-using System.Linq;
-using Dapper;
-using SEOWorkflowDataAccess;
+﻿using Dapper;
+using log4net;
 using SEOWorkflowDomain;
+using System;
+using System.Data;
+using System.Linq;
 
 namespace SEOWorkflowDataAccess
 {
@@ -13,15 +11,16 @@ namespace SEOWorkflowDataAccess
     {
         #region fields
 
-        private readonly IDbConnection _database;
+        private static readonly ILog Log = LogManager.GetLogger(typeof(SeoRepository));
+        private readonly SeoDataConnection _seoDataConnection;
 
         #endregion
 
         #region constructor
 
-        public SeoRepository()
+        public SeoRepository(SeoDataConnection seoDataConnection)
         {
-            _database = new SqlConnection(ConfigurationManager.ConnectionStrings["SeoConnection"].ConnectionString);
+            _seoDataConnection = seoDataConnection;
         }
 
         #endregion
@@ -31,16 +30,32 @@ namespace SEOWorkflowDataAccess
         public Product GetSeoProduct(string externalProductId)
         {
             var param = new DynamicParameters();
+            Product product = null;
 
             param.Add("ExternalProductId", externalProductId);
 
-            return this._database.Query<Product>("[dbo].[Seo.Product.Retrieve]", param, null, true, 0, CommandType.StoredProcedure).FirstOrDefault();
+            using (var connection = _seoDataConnection.CreateSeoDataConnection())
+            {
+                try
+                {
+                    connection.Open();
+                    product = connection.Query<Product>("[dbo].[Seo.Product.Retrieve]", param, null, true, 0, CommandType.StoredProcedure).FirstOrDefault();
+                }
+                catch (Exception ex)
+                {
+                    Log.Error("An error occurred retreiving product", ex);
+                    throw;
+                }
+            }
+
+            return product;
         }
 
-        public bool SaveSeoProduct(Product product, bool isNewProduct)
+        public int SaveSeoProduct(Product product, bool isNewProduct)
         {
             var param = new DynamicParameters();
             var spName = string.Empty;
+            var productId = 0;
 
             if (isNewProduct)
             {
@@ -64,9 +79,22 @@ namespace SEOWorkflowDataAccess
             param.Add("Themes", product.Themes);
             param.Add("UpdatedBy", "NoumanQureshi");
 
-            _database.ExecuteScalar(spName, param, null, 0, CommandType.StoredProcedure);
 
-            return true;
+            using (var connection = _seoDataConnection.CreateSeoDataConnection())
+            {
+                try
+                {
+                    connection.Open();
+                    productId = connection.ExecuteScalar<int>(spName, param, null, 0, CommandType.StoredProcedure);
+                }
+                catch (Exception ex)
+                {
+                    Log.Error("An error occurred saving product", ex);
+                    throw;
+                }
+            }
+
+            return productId;
         }
 
         #endregion

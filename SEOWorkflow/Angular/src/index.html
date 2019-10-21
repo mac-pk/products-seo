@@ -42,9 +42,15 @@
         $(".esp-breadcrumb").click(function () {
             $(".side-nav-toolbar").toggle();
         });
+        $(".show-toast").click(function () {
+            $("#saveProductMessage").toast({ delay: 2000 });
+            $("#saveProductMessage").toast('show');
+        });
+        $(document).on("click", "#btnSaveProduct", function (event) {
+            $("#saveProductMessage").toast({ delay: 2000 });
+            $("#saveProductMessage").toast('show');
+        });
     });
-
-
 </script>
 
 </html>
