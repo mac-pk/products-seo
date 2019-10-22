@@ -2,6 +2,8 @@
 {
     public static class Constants
     {
+        public const int DefaultCommandTimeout = 0; // no limit
+
         public static class SEOStatus
         {
             public const string REDY = "Ready for SEO";

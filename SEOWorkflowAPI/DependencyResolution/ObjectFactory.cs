@@ -28,8 +28,8 @@ namespace SEOWorkflowAPI.DependencyResolution
                 x.For<ISeoDataConnection>().LifecycleIs<HttpContextLifecycle>().Use<SeoDataConnection>();
 
                 x.For<ISeoConnectionInfo>().Use<SeoConnectionInfo>();
-                x.For<ISeoService>().Use<SeoService>();
-                x.For<ISeoRepository>().Use<SeoRepository>();
+                x.For<IProductService>().Use<ProductService>();
+                x.For<IProductRepository>().Use<ProductRepository>();
             });
         }
     }

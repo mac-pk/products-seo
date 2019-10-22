@@ -15,7 +15,6 @@ import { EnumKeywordType } from '../shared/models/optimizeProduct/EnumKeywordTyp
 import { EnumCategoryType } from '../shared/models/optimizeProduct/EnumCategoryType';
 import { Observable } from 'rxjs';
 import { debounceTime, distinctUntilChanged, map } from 'rxjs/operators';
-import { NgForm } from '@angular/forms';
 import { SaveProductModalComponent } from '../modals/save-product-modal/save-product-modal.component';
 
 
@@ -396,7 +395,8 @@ export class ProductOptimizationComponent implements OnInit {
       this.seoProduct.SeoKeywords = [];
     }
 
-    seoKeywordArray.forEach((keyword) => (this.seoProduct.SeoKeywords.push(keyword)));
+    seoKeywordArray.forEach((keyword) => (
+      (this.seoProduct.SeoKeywords.indexOf(keyword) == -1) ? this.seoProduct.SeoKeywords.push(keyword) : ""));
     this.seoKeyword = "";
   }
 
@@ -446,8 +446,10 @@ export class ProductOptimizationComponent implements OnInit {
       debounceTime(200),
       distinctUntilChanged(),
       map(theme => theme === '' ? []
-        : this.themeSearchFilter == 'Start With' ? this.themes.filter(v => v.toLowerCase().startsWith(theme.toLowerCase())).slice(0, 10) :
-          this.themes.filter(v => v.toLowerCase().indexOf(theme.toLowerCase()) > -1).slice(0, 10))
+        : this.themeSearchFilter == 'Start With' ? this.themes.filter(v => v.toLowerCase().startsWith(theme.toLowerCase()) &&
+          this.seoProduct.ProductThemes.indexOf(v) == -1).slice(0, 10) :
+          this.themes.filter(v => v.toLowerCase().indexOf(theme.toLowerCase()) > -1 &&
+            this.seoProduct.ProductThemes.indexOf(v) == -1).slice(0, 10))
     );
 
   themeSelected($event) {

@@ -4,11 +4,12 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using System.Threading.Tasks;
 using static SEOWorkflowDomain.Constants;
 
 namespace SEOWorkflowBusiness
 {
-    public class SeoService : ISeoService
+    public class ProductService : IProductService
     {
         #region constants
 
@@ -21,13 +22,13 @@ namespace SEOWorkflowBusiness
 
         #region fields
 
-        private ISeoRepository _repository;
+        private readonly IProductRepository _repository;
 
         #endregion
 
         #region constructors
 
-        public SeoService(ISeoRepository repository)
+        public ProductService(IProductRepository repository)
         {
             _repository = repository;
         }
@@ -36,9 +37,9 @@ namespace SEOWorkflowBusiness
 
         #region methods
 
-        public Product GetSeoProduct(string externalProductId)
+        public async Task<Product> GetSeoProductAsync(string externalProductId)
         {
-            var product = _repository.GetSeoProduct(externalProductId);
+            var product = await _repository.GetSeoProductAsync(externalProductId);
             var productCategories = new List<ProductCategory>();
 
             if (product != null)
@@ -51,12 +52,13 @@ namespace SEOWorkflowBusiness
                     {
                         var categoryName = s[i];
                         var categoryType = s[i + 1];
-                        var category = new ProductCategory();
-
-                        category.Value = categoryName;
-                        category.Type = categoryType;
-                        category.IsSelected = true;
-                        category.IsDisabled = false;
+                        var category = new ProductCategory
+                        {
+                            Value = categoryName,
+                            Type = categoryType,
+                            IsSelected = true,
+                            IsDisabled = false
+                        };
 
                         productCategories.Add(category);
                     }
@@ -75,7 +77,7 @@ namespace SEOWorkflowBusiness
             return product;
         }
 
-        public int SaveSeoProduct(Product product, bool isNewProduct)
+        public async Task<int> SaveSeoProductAsync(Product product, bool isNewProduct)
         {
             var productCategories = new StringBuilder();
 
@@ -92,7 +94,7 @@ namespace SEOWorkflowBusiness
             product.Themes = (product.ProductThemes != null) ? string.Join(",", product.ProductThemes) : string.Empty;
             product.SEOStatus = GetSEOStatusEnumKey(product.SEOStatus);
 
-            return _repository.SaveSeoProduct(product, isNewProduct);
+            return await _repository.SaveSeoProductAsync(product, isNewProduct);
         }
 
         private string GetSEOStatusEnumKey(string seoStatus)

@@ -1,5 +1,7 @@
-﻿using SEOWorkflowBusiness;
+﻿using SEOWorkflowAPI;
+using SEOWorkflowBusiness;
 using SEOWorkflowDomain;
+using System.Threading.Tasks;
 using System.Web.Http;
 using System.Web.Http.Cors;
 
@@ -8,17 +10,17 @@ namespace SEOProductAPI.Controllers
     [EnableCors(origins: "*", headers: "*", methods: "*")]
     //[ApiVersion("1.0")]
     [RoutePrefix("product")]
-    public class ProductController : ApiController
+    public class ProductController : ControllerBase
     {
         #region fields
 
-        private readonly ISeoService _service;
+        private readonly IProductService _service;
 
         #endregion
 
         #region constructors
 
-        public ProductController(ISeoService service)
+        public ProductController(IProductService service)
         {
             _service = service;
         }
@@ -27,33 +29,30 @@ namespace SEOProductAPI.Controllers
 
         #region actions
 
-        // GET: api/Product/9207-550876635
         [Route("{externalProductId}")]
         [HttpGet]
         [AllowAnonymous]
-        public IHttpActionResult GetSeoProduct(string externalProductId)
+        public Task<IHttpActionResult> GetSeoProductAsync(string externalProductId)
         {
-            return Ok(_service.GetSeoProduct(externalProductId));
+            return OkAsync(_service.GetSeoProductAsync(externalProductId));
         }
 
-        // POST: api/product/insert
         [Route("insert")]
         [HttpPost]
         //[Authorize(Roles = "Administrators")]
         [AllowAnonymous]
-        public IHttpActionResult InsertSeoProduct(Product product)
+        public Task<IHttpActionResult> InsertSeoProductAsync(Product product)
         {
-            return Ok(_service.SaveSeoProduct(product, true));
+            return OkNotFoundAsync(_service.SaveSeoProductAsync(product, true));
         }
 
-        // PUT: api/product/update
         [Route("update")]
         [HttpPut]
         [AllowAnonymous]
         //[Authorize(Roles = "Administrators")]
-        public IHttpActionResult UpdateSeoProduct(Product product)
+        public Task<IHttpActionResult> UpdateSeoProductAsync(Product product)
         {
-            return Ok(_service.SaveSeoProduct(product, false));
+            return OkNotFoundAsync(_service.SaveSeoProductAsync(product, false));
         }
 
         #endregion

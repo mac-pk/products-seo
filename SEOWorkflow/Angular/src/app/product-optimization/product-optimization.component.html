@@ -96,7 +96,8 @@
                         <p class="label-black mb-0">Optimized Description</p>
                         <div class="form-group">
                             <textarea [(ngModel)]="seoProduct.Description" #description="ngModel" name="description"
-                                required class="form-control" rows="4" maxlength="800" (click)="onSeoFieldClick()"></textarea>
+                                required class="form-control" rows="4" maxlength="800"
+                                (click)="onSeoFieldClick()"></textarea>
                             <label class="label-light">{{seoProduct.Description ? seoProduct.Description.length : 0}} of
                                 800 characters</label>
                             <div *ngIf="description.invalid && !isLoading && (description.dirty || description.touched)"

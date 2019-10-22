@@ -42,9 +42,12 @@
         $(".esp-breadcrumb").click(function () {
             $(".side-nav-toolbar").toggle();
         });
+        $(".show-toast").click(function () {
+            $("#myToast").toast({ delay: 2000 });
+            $("#myToast").toast('show');
+        });
+        $( 'option[value="myVal"]' ).attr( 'selected', 'selected' );
     });
-
-
 </script>
 
 </html>

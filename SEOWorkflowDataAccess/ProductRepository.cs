@@ -4,21 +4,22 @@ using SEOWorkflowDomain;
 using System;
 using System.Data;
 using System.Linq;
+using System.Threading.Tasks;
 
 namespace SEOWorkflowDataAccess
 {
-    public class SeoRepository : ISeoRepository
+    public class ProductRepository : IProductRepository
     {
         #region fields
 
-        private static readonly ILog Log = LogManager.GetLogger(typeof(SeoRepository));
+        private static readonly ILog Log = LogManager.GetLogger(typeof(ProductRepository));
         private readonly SeoDataConnection _seoDataConnection;
 
         #endregion
 
         #region constructor
 
-        public SeoRepository(SeoDataConnection seoDataConnection)
+        public ProductRepository(SeoDataConnection seoDataConnection)
         {
             _seoDataConnection = seoDataConnection;
         }
@@ -27,7 +28,7 @@ namespace SEOWorkflowDataAccess
 
         #region methods
 
-        public Product GetSeoProduct(string externalProductId)
+        public async Task<Product> GetSeoProductAsync(string externalProductId)
         {
             var param = new DynamicParameters();
             Product product = null;
@@ -39,7 +40,7 @@ namespace SEOWorkflowDataAccess
                 try
                 {
                     connection.Open();
-                    product = connection.Query<Product>("[dbo].[Seo.Product.Retrieve]", param, null, true, 0, CommandType.StoredProcedure).FirstOrDefault();
+                    product = (await connection.QueryAsync<Product>("[dbo].[Seo.Product.Retrieve]", param, null, Constants.DefaultCommandTimeout, CommandType.StoredProcedure).ConfigureAwait(false)).FirstOrDefault();
                 }
                 catch (Exception ex)
                 {
@@ -51,7 +52,7 @@ namespace SEOWorkflowDataAccess
             return product;
         }
 
-        public int SaveSeoProduct(Product product, bool isNewProduct)
+        public async Task<int> SaveSeoProductAsync(Product product, bool isNewProduct)
         {
             var param = new DynamicParameters();
             var spName = string.Empty;
@@ -85,7 +86,7 @@ namespace SEOWorkflowDataAccess
                 try
                 {
                     connection.Open();
-                    productId = connection.ExecuteScalar<int>(spName, param, null, 0, CommandType.StoredProcedure);
+                    productId = await connection.ExecuteScalarAsync<int>(spName, param, null, 0, CommandType.StoredProcedure).ConfigureAwait(false);
                 }
                 catch (Exception ex)
                 {

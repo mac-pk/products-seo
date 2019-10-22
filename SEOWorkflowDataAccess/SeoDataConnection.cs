@@ -7,7 +7,7 @@ namespace SEOWorkflowDataAccess
     {
         #region fields
 
-        private ISeoConnectionInfo _seoConnectionInfo;
+        private readonly ISeoConnectionInfo _seoConnectionInfo;
 
         #endregion
 
