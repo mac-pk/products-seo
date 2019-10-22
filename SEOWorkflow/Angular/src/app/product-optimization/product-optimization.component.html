@@ -13,14 +13,14 @@
         <div class=" float-lg-right float-md-left">
             <div class="col"> <a href="#/searchProduct" class="mr-3">Manage My Products</a>
                 <span *ngIf="hasPreviousProduct">
-                    <a (click)="getProductsData(false, optimizeForm)" href="#/optimizeProduct" class="mr-3">Previous
+                    <a (click)="getProductsData(false)" href="#/optimizeProduct" class="mr-3">Previous
                         Product</a>
                 </span>
                 <span *ngIf="!hasPreviousProduct">
                     <a class="mr-3">Previous Product</a>
                 </span>
                 <span *ngIf="hasNextProduct">
-                    <a (click)="getProductsData(true, optimizeForm)" href="#/optimizeProduct" class="mr-3">Next
+                    <a (click)="getProductsData(true)" href="#/optimizeProduct" class="mr-3">Next
                         Product</a>
                 </span>
                 <span *ngIf="!hasNextProduct">
@@ -151,11 +151,11 @@
                                     with a
                                     comma</label>
                                 <button type="button"
-                                    [disabled]="((seoProduct.SeoKeywords == null) || (seoProduct.SeoKeywords == ''))"
+                                    [disabled]="((seoProduct.SeoKeywords == null) || (seoProduct.SeoKeywords.toString() == ''))"
                                     (click)="openClearAll(true)" class="btn btn-blue my-1">Clear
                                     All</button>
                             </span>
-                            <ng-container *ngIf="!((seoProduct.SeoKeywords == null) || (seoProduct.SeoKeywords == ''))">
+                            <ng-container *ngIf="!((seoProduct.SeoKeywords == null) || (seoProduct.SeoKeywords.toString() == ''))">
                                 <span class=" e-keyword" *ngFor="let keyword of seoProduct.SeoKeywords">
                                     <a class="remove-searched">{{keyword}}
                                         <input (click)="cancelItem(keyword, true)" type="text" />

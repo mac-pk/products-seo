@@ -426,20 +426,6 @@
     <Content Include="fonts\glyphicons-halflings-regular.svg" />
     <Content Include="Global.asax" />
     <Content Include="index.html" />
-    <Content Include="scripts\asi\assets\asiLogo-login.png" />
-    <Content Include="scripts\asi\assets\esp.png" />
-    <Content Include="scripts\asi\assets\image.png" />
-    <Content Include="scripts\asi\assets\images\asiLogo-login.png" />
-    <Content Include="scripts\asi\assets\images\esp-loader-genreal.gif" />
-    <Content Include="scripts\asi\assets\images\image.png" />
-    <Content Include="scripts\asi\assets\images\no_image.png" />
-    <Content Include="scripts\asi\favicon.ico" />
-    <Content Include="scripts\asi\index.html" />
-    <Content Include="scripts\asi\main.js" />
-    <Content Include="scripts\asi\polyfills.js" />
-    <Content Include="scripts\asi\runtime.js" />
-    <Content Include="scripts\asi\styles.js" />
-    <Content Include="scripts\asi\vendor.js" />
     <Content Include="scripts\libs\jquery.js" />
     <Content Include="Web.config" />
   </ItemGroup>
@@ -472,7 +458,6 @@
     <Content Include="fonts\glyphicons-halflings-regular.woff2" />
     <Content Include="log4net.config" />
     <Content Include="Angular\.editorconfig" />
-    <Content Include="Angular\.gitignore" />
     <Content Include="Angular\angular.json" />
     <Content Include="Angular\browserslist" />
     <Content Include="Angular\package-lock.json" />
@@ -495,14 +480,6 @@
     <Content Include="Views\Shared\_Layout.cshtml" />
     <Content Include="Views\Web.config" />
     <Content Include="Views\_ViewStart.cshtml" />
-    <Content Include="scripts\asi\assets\json\facetSearch.json" />
-    <Content Include="scripts\asi\assets\json\productCategory.json" />
-    <Content Include="scripts\asi\assets\json\searchproduct.json" />
-    <Content Include="scripts\asi\main.js.map" />
-    <Content Include="scripts\asi\polyfills.js.map" />
-    <Content Include="scripts\asi\runtime.js.map" />
-    <Content Include="scripts\asi\styles.js.map" />
-    <Content Include="scripts\asi\vendor.js.map" />
     <None Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>
