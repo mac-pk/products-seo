@@ -58,6 +58,13 @@ export class SeoService {
     return this.http.get(environment.apiBaseUrl + "SEOproducts", { params });
   };
 
+  getSupplierSEOProducts(companyId: number): Observable<any> {
+    let params = new HttpParams()
+      .set("companyId", companyId.toString());
+
+    return this.http.get(environment.seoBaseUrl + "product/getbycompanyid", { params });
+  }
+
   loginSeo(seo: ISeoLogin): Observable<any> {
     return this.http.post(this.loginUrl, seo, this.httpOptions).pipe(
       tap((seo: ISeoLogin) => this.log(`Login with username=${seo.Username}`)),

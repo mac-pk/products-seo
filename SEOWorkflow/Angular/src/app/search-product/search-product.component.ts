@@ -12,6 +12,8 @@ import { EmailSupplierModalComponent } from '../modals/email-supplier-modal/emai
 import { ISupplier } from '../shared/models/searchSuppliers/ISearchSuppliers';
 import { SupplierService } from '../shared/services/supplier.service';
 import { SearchFilterParam } from '../shared/models/searchProduct/SearchFilterParam';
+import { Observable } from 'rxjs';
+import { SEOProductSatus } from '../shared/models/searchProduct/SEOProductSatus';
 
 @Component({
   selector: 'app-search-product',
@@ -21,6 +23,7 @@ import { SearchFilterParam } from '../shared/models/searchProduct/SearchFilterPa
 export class SearchProductComponent implements OnInit {
 
   products: SearchProduct[] = [];
+  seoProducts: SEOProductSatus[] = [];
   objSearchFilter: SearchFilter[] = [];
   selectedFacetTerms: FacetTerms[] = [];
   supplier: ISupplier;
@@ -60,9 +63,10 @@ export class SearchProductComponent implements OnInit {
     }
   }
 
-  loadProducts(products: any[]) {
+  loadProducts(products: any[], optimizedProducts: any[]) {
     if (products.length) {
-      this.products = products.map((product) => new SearchProduct(product));
+      this.products = this.getMappedProducts(products, optimizedProducts).map((product) => new SearchProduct(product));
+      this.seoProducts = optimizedProducts.map((product) => new SEOProductSatus(product));
       this.noProductsFound = false;
     } else
       this.noProductsFound = true;
@@ -83,7 +87,14 @@ export class SearchProductComponent implements OnInit {
     this._SeoService.getSuplierProducts(companyId, searchText, filters, sortBy, offset).subscribe(data => {
       if (data) {
         this.isSelectAll = false;
-        this.loadProducts(data.Products);
+
+        this._SeoService.getSupplierSEOProducts(companyId).subscribe(seoData => {
+          if (seoData && seoData.length > 0)
+            this.loadProducts(data.Products, seoData);
+          else
+            this.loadProducts(data.Products, []);
+        });
+
         this.loadFilters(data.Filters);
         this.totalCount = data.TotalCount;
       }
@@ -222,5 +233,15 @@ export class SearchProductComponent implements OnInit {
     localStorage.setItem('selectedExternalProductId', externalProductId);
     localStorage.setItem('allExternalProductIds', JSON.stringify(this.products.map((product) => product.ExternalProductId).toString().split(',')));
     this.router.navigate(['/optimizeProduct']);
+  }
+
+  getMappedProducts(supplierProducts: any[], optimizedProducts: any[]): any[] {
+    supplierProducts.forEach(element => {
+      if (optimizedProducts.some(op => op.ExternalProductId == element.ExternalProductId)) {
+        element.SEOStatus = optimizedProducts.find(pr => element.ExternalProductId == pr.ExternalProductId).ProductStatus;
+      }
+    });
+
+    return supplierProducts;
   }
 }
