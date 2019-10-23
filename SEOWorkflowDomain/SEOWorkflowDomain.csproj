@@ -48,6 +48,7 @@
     <Compile Include="SEOProductInfo.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Product.cs" />
+    <Compile Include="SEOProductStatus.cs" />
     <Compile Include="SEOSelectedProductCategories.cs" />
     <Compile Include="SEOSelectedProductKeywords.cs" />
   </ItemGroup>

@@ -59,4 +59,7 @@
     <Folder Include="Properties" />
     <Folder Include="StoredProcedures" />
   </ItemGroup>
+  <ItemGroup>
+    <Build Include="StoredProcedures\Seo.Product.GetCompanyProducts.sql" />
+  </ItemGroup>
 </Project>

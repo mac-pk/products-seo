@@ -55,6 +55,14 @@ namespace SEOProductAPI.Controllers
             return OkNotFoundAsync(_service.SaveSeoProductAsync(product, false));
         }
 
+        [Route("getbycompanyid")]
+        [HttpGet]
+        [AllowAnonymous]
+        public Task<IHttpActionResult> GetCompanyProductsAsync(int companyId)
+        {
+            return OkAsync(_service.GetCompanyProducts(companyId));
+        }
+
         #endregion
     }
 }

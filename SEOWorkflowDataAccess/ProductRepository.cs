@@ -2,6 +2,7 @@
 using log4net;
 using SEOWorkflowDomain;
 using System;
+using System.Collections.Generic;
 using System.Data;
 using System.Linq;
 using System.Threading.Tasks;
@@ -96,6 +97,28 @@ namespace SEOWorkflowDataAccess
             }
 
             return productId;
+        }
+
+        public async Task<IEnumerable<SEOProductStatus>> GetCompanyProducts(int companyId)
+        {
+            var sql = "[dbo].[Seo.Product.GetCompanyProducts]";
+            var queryParams = new DynamicParameters();
+
+            queryParams.Add("CompanyId", companyId);
+
+            using (var connection = _seoDataConnection.CreateSeoDataConnection())
+            {
+                try
+                {
+                    connection.Open();
+                    return (await connection.QueryAsync<SEOProductStatus>(sql, queryParams, null, Constants.DefaultCommandTimeout, CommandType.StoredProcedure).ConfigureAwait(false)).AsEnumerable();
+                }
+                catch (Exception ex)
+                {
+                    Log.Error("An error occurred retreiving product", ex);
+                    throw;
+                }
+            }
         }
 
         #endregion

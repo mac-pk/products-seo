@@ -97,6 +97,11 @@ namespace SEOWorkflowBusiness
             return await _repository.SaveSeoProductAsync(product, isNewProduct);
         }
 
+        public async Task<IEnumerable<SEOProductStatus>> GetCompanyProducts(int companyId)
+        {
+            return await _repository.GetCompanyProducts(companyId);
+        }
+
         private string GetSEOStatusEnumKey(string seoStatus)
         {
             var status = string.Empty;
