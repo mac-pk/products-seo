@@ -39,7 +39,6 @@ namespace SEOProductAPI.Controllers
 
         [Route("insert")]
         [HttpPost]
-        //[Authorize(Roles = "Administrators")]
         [AllowAnonymous]
         public Task<IHttpActionResult> InsertSeoProductAsync(Product product)
         {
@@ -49,7 +48,6 @@ namespace SEOProductAPI.Controllers
         [Route("update")]
         [HttpPut]
         [AllowAnonymous]
-        //[Authorize(Roles = "Administrators")]
         public Task<IHttpActionResult> UpdateSeoProductAsync(Product product)
         {
             return OkNotFoundAsync(_service.SaveSeoProductAsync(product, false));

@@ -22,6 +22,7 @@ import { ProductCategoryModalComponent } from './modals/product-category-modal/p
 import { EditorModule } from '@tinymce/tinymce-angular';
 import { ClearAllModalComponent } from './modals/clear-all-modal/clear-all-modal.component';
 import { SaveProductModalComponent } from './modals/save-product-modal/save-product-modal.component';
+import { EditProductModalComponent } from './modals/edit-product-modal/edit-product-modal.component';
 
 @NgModule({
   declarations: [
@@ -38,7 +39,8 @@ import { SaveProductModalComponent } from './modals/save-product-modal/save-prod
     EmailSupplierModalComponent,
     ProductCategoryModalComponent,
     ClearAllModalComponent,
-    SaveProductModalComponent
+    SaveProductModalComponent,
+    EditProductModalComponent
   ],
   imports: [
     BrowserModule,
@@ -65,7 +67,8 @@ import { SaveProductModalComponent } from './modals/save-product-modal/save-prod
     EmailSupplierModalComponent, 
     ProductCategoryModalComponent, 
     ClearAllModalComponent,
-    SaveProductModalComponent],
+    SaveProductModalComponent,
+    EditProductModalComponent],
   exports: [DigitOnlyDirective]
 })
 export class AppModule { }

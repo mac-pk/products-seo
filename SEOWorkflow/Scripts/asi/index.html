@@ -43,10 +43,13 @@
             $(".side-nav-toolbar").toggle();
         });
         $(".show-toast").click(function () {
-            $("#myToast").toast({ delay: 2000 });
-            $("#myToast").toast('show');
+            $("#saveProductMessage").toast({ delay: 2000 });
+            $("#saveProductMessage").toast('show');
         });
-        $( 'option[value="myVal"]' ).attr( 'selected', 'selected' );
+        $(document).on("click", "#btnSaveProduct", function (event) {
+            $("#saveProductMessage").toast({ delay: 2000 });
+            $("#saveProductMessage").toast('show');
+        });
     });
 </script>
 

@@ -16,7 +16,7 @@ import { EnumCategoryType } from '../shared/models/optimizeProduct/EnumCategoryT
 import { Observable } from 'rxjs';
 import { debounceTime, distinctUntilChanged, map } from 'rxjs/operators';
 import { SaveProductModalComponent } from '../modals/save-product-modal/save-product-modal.component';
-
+import { EditProductModalComponent } from '../modals/edit-product-modal/edit-product-modal.component';
 
 @Component({
   selector: 'app-product-optimization',
@@ -245,6 +245,23 @@ export class ProductOptimizationComponent implements OnInit {
     });
   }
 
+  openCanEditProduct(productSeoStatus: string) {
+    let options: NgbModalOptions = { backdrop: 'static', size: 'lg', scrollable: true, centered: true };
+    const canEditProductModal = this.modalService.open(EditProductModalComponent, options);
+
+    canEditProductModal.componentInstance.productSeoStatus = productSeoStatus;
+
+    canEditProductModal.result.then((canEdit) => {
+      if (canEdit) {
+        this.seoProduct.SEOStatus = this.seoStausEnum.IPRS;
+      } else {
+        this.router.navigate(['/searchProduct']);
+      }
+    }).catch(error => {
+      canEditProductModal.dismiss();
+    });
+  }
+
   isSeoProductModified(): boolean {
     let result: boolean = false;
 
@@ -429,8 +446,14 @@ export class ProductOptimizationComponent implements OnInit {
     });
   }
 
-  onSeoFieldClick() {
-    if (this.seoProduct.SEOStatus === this.seoStausEnum.REDY) {
+  onSeoFieldClick(event) {
+    if (!((this.seoProduct.SEOStatus === this.seoStausEnum.REDY) ||
+      (this.seoProduct.SEOStatus === this.seoStausEnum.REVN) ||
+      (this.seoProduct.SEOStatus === this.seoStausEnum.IPRS))) {
+      event.srcElement.blur();
+      event.preventDefault();
+      this.openCanEditProduct(this.seoProduct.SEOStatus);
+    } else if (this.seoProduct.SEOStatus === this.seoStausEnum.REDY) {
       this.seoProduct.SEOStatus = this.seoStausEnum.IPRS;
     }
   }
@@ -452,10 +475,9 @@ export class ProductOptimizationComponent implements OnInit {
             this.seoProduct.ProductThemes.indexOf(v) == -1).slice(0, 10))
     );
 
-  themeSelected($event) {
-    if (!this.seoProduct.ProductThemes) {
-      this.seoProduct.ProductThemes = [];
-    }
+  themeSelected($event, input) {
+    $event.preventDefault();
     this.seoProduct.ProductThemes.push($event.item);
+    input.value = '';
   }
 }
