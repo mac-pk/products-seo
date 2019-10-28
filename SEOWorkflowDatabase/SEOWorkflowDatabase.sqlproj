@@ -58,8 +58,16 @@
   <ItemGroup>
     <Folder Include="Properties" />
     <Folder Include="StoredProcedures" />
+    <Folder Include="Tables" />
   </ItemGroup>
   <ItemGroup>
     <Build Include="StoredProcedures\Seo.Product.GetCompanyProducts.sql" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="StoredProcedures\Seo.Product.Create.sql" />
+    <None Include="StoredProcedures\Seo.Product.Retrieve.sql" />
+    <None Include="StoredProcedures\Seo.Product.Update.sql" />
+    <None Include="Tables\SEO_ProductOptimization.sql" />
+    <None Include="Tables\SEO_ProductStatus.sql" />
   </ItemGroup>
 </Project>
