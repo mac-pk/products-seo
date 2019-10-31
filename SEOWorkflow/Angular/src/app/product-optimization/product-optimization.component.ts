@@ -133,7 +133,7 @@ export class ProductOptimizationComponent implements OnInit {
 
         if (!this.hasSeoProductData) {
           this.currentProduct.SEOStatus = this.seoStausEnum.REDY;
-          this.seoProduct = new OptimizeProduct(product.ID, product.ExternalProductId, product.CompanyId, product.Name, product.Description, product.Summary, product.SEOStatus, product.PrimaryImageURL, product.AsiProdNo);
+          this.seoProduct = new OptimizeProduct(product.ID, product.ExternalProductId, product.CompanyId, product.Name, "", "", product.SEOStatus, product.PrimaryImageURL, product.AsiProdNo);
           this.seoProduct.ProductCategories = this.currentProduct.ProductCategories;
           this.loadSeoProduct();
         }
@@ -184,7 +184,15 @@ export class ProductOptimizationComponent implements OnInit {
   }
 
   createOriginalSeoProduct() {
-    this.originalSeoProduct = new OptimizeProduct(this.seoProduct.ID, this.seoProduct.ExternalProductId, this.seoProduct.CompanyId, this.seoProduct.Name, this.seoProduct.Description, this.seoProduct.Summary, this.seoProduct.SEOStatus, this.seoProduct.PrimaryImageURL, this.seoProduct.AsiProdNo);
+    this.originalSeoProduct = new OptimizeProduct(this.seoProduct.ID,
+      this.seoProduct.ExternalProductId,
+      this.seoProduct.CompanyId,
+      this.seoProduct.Name,
+      this.IsNewProduct() ? "" : this.seoProduct.Description,
+      this.IsNewProduct() ? "" : this.seoProduct.Summary,
+      this.seoProduct.SEOStatus,
+      this.seoProduct.PrimaryImageURL,
+      this.seoProduct.AsiProdNo);
     this.originalSeoProduct.ProductCategories = Object.assign([], this.seoProduct.ProductCategories);
     this.originalSeoProduct.SeoKeywords = Object.assign([], this.seoProduct.SeoKeywords);
     this.originalSeoProduct.ProductThemes = Object.assign([], this.seoProduct.ProductThemes);
@@ -447,6 +455,16 @@ export class ProductOptimizationComponent implements OnInit {
   }
 
   onSeoFieldClick(event) {
+    if (this.originalSeoProduct.SEOStatus === this.seoStausEnum.REDY) {
+      if ((event.target.name === "description") && (this.originalSeoProduct.Description === "")) {
+        this.seoProduct.Description = this.currentProduct.Description;
+        this.originalSeoProduct.Description = this.currentProduct.Description;
+      } else if ((event.target.name === "summary") && (this.originalSeoProduct.Summary === "")) {
+        this.seoProduct.Summary = this.currentProduct.Summary;
+        this.originalSeoProduct.Summary = this.currentProduct.Summary;
+      }
+    }
+
     if (!((this.seoProduct.SEOStatus === this.seoStausEnum.REDY) ||
       (this.seoProduct.SEOStatus === this.seoStausEnum.REVN) ||
       (this.seoProduct.SEOStatus === this.seoStausEnum.IPRS))) {

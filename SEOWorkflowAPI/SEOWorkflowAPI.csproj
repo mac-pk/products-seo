@@ -45,30 +45,6 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
-    <Reference Include="ASI.Services.Http, Version=4.0.0.0, Culture=neutral, processorArchitecture=MSIL">
-      <HintPath>..\packages\ASI.Services.Http.4.0.1\lib\net472\ASI.Services.Http.dll</HintPath>
-    </Reference>
-    <Reference Include="ASI.Services.Http.Security, Version=3.0.0.0, Culture=neutral, processorArchitecture=MSIL">
-      <HintPath>..\packages\ASI.Services.Http.Security.3.0.2\lib\net472\ASI.Services.Http.Security.dll</HintPath>
-    </Reference>
-    <Reference Include="ASI.Services.Logging, Version=3.0.0.0, Culture=neutral, processorArchitecture=MSIL">
-      <HintPath>..\packages\ASI.Services.Logging.3.0.9\lib\net472\ASI.Services.Logging.dll</HintPath>
-    </Reference>
-    <Reference Include="ASI.Services.Messaging, Version=3.0.0.0, Culture=neutral, processorArchitecture=MSIL">
-      <HintPath>..\packages\ASI.Services.Messaging.3.0.10\lib\net472\ASI.Services.Messaging.dll</HintPath>
-    </Reference>
-    <Reference Include="ASI.Services.Mms, Version=3.0.0.0, Culture=neutral, processorArchitecture=MSIL">
-      <HintPath>..\packages\ASI.Services.Mms.3.0.4\lib\net452\ASI.Services.Mms.dll</HintPath>
-    </Reference>
-    <Reference Include="ASI.Services.Monitoring, Version=3.0.0.0, Culture=neutral, processorArchitecture=MSIL">
-      <HintPath>..\packages\ASI.Services.Monitoring.3.0.12\lib\net472\ASI.Services.Monitoring.dll</HintPath>
-    </Reference>
-    <Reference Include="ASI.Services.Security, Version=3.0.0.0, Culture=neutral, processorArchitecture=MSIL">
-      <HintPath>..\packages\ASI.Services.Security.3.0.3\lib\net452\ASI.Services.Security.dll</HintPath>
-    </Reference>
-    <Reference Include="ASI.Services.Statistics, Version=4.0.0.0, Culture=neutral, processorArchitecture=MSIL">
-      <HintPath>..\packages\ASI.Services.Statistics.4.0.5\lib\net472\ASI.Services.Statistics.dll</HintPath>
-    </Reference>
     <Reference Include="ASI.Services.WebApi, Version=1.1.0.0, Culture=neutral, processorArchitecture=MSIL">
       <HintPath>..\packages\ASI.Services.WebApi.1.1.13\lib\net472\ASI.Services.WebApi.dll</HintPath>
     </Reference>
@@ -576,7 +552,7 @@
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\SEOWorkflowDataAccess\SEOWorkflowDataAccess.csproj">
-      <Project>{9B8FE0BF-9B95-47EA-BA46-0EDA4B2590E4}</Project>
+      <Project>{9b8fe0bf-9b95-47ea-ba46-0eda4b2590e4}</Project>
       <Name>SEOWorkflowDataAccess</Name>
     </ProjectReference>
     <ProjectReference Include="..\SEOWorkflowDomain\SEOWorkflowDomain.csproj">

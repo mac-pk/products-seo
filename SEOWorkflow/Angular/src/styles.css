@@ -763,3 +763,14 @@ and (max-width: 850px) {
     top: 5px;
     right:unset;
   }  
+
+  .sticky{
+    position: fixed;
+    top: 0;
+    width: 100%;
+    z-index: 9;
+    background: #fff;
+  }
+  .sticky + .content {
+    padding-top: 102px;
+  }

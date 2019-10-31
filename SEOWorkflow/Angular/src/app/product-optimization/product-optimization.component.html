@@ -1,4 +1,4 @@
-<div class="row esp-sub-header pt-2">
+<div class="row esp-sub-header pt-2 sticky" id="optimizeHeader">
     <div *ngIf="isLoading" class="progress-img d-flex text-center">
         <img src="assets/images/esp-loader-genreal.gif" class="justify-content-center align-self-center mx-auto">
     </div>
@@ -34,7 +34,7 @@
         </div>
     </div>
 </div>
-<div class="row h-100">
+<div class="row h-100 content">
     <div class="col-12">
         <div class="d-block border mb-4 pb-4 h-100">
             <div class="col-12 col-md-6 col-lg-3">
@@ -100,7 +100,7 @@
                                 (click)="onSeoFieldClick($event)"></textarea>
                             <label class="label-light">{{seoProduct.Description ? seoProduct.Description.length : 0}} of
                                 800 characters</label>
-                            <div *ngIf="description.invalid && !isLoading && (description.dirty || description.touched)"
+                            <div *ngIf="description.invalid && !isLoading && (description.touched)"
                                 class="error text-danger">
                                 <div *ngIf="description.errors.required">
                                     <i class="material-icons">info</i> Product description is required.
@@ -115,7 +115,7 @@
                                 (click)="onSeoFieldClick($event)"></textarea>
                             <label class="label-light">{{seoProduct.Summary ? seoProduct.Summary.length : 0}} of 130
                                 characters</label>
-                            <div *ngIf="summary.invalid && !isLoading  && (summary.dirty || summary.touched)"
+                            <div *ngIf="summary.invalid && !isLoading && (description.touched)"
                                 class="error text-danger">
                                 <div *ngIf="summary.errors.required">
                                     <i class="material-icons">info</i> Product summary is required.
@@ -167,8 +167,7 @@
                                 </span>
                             </ng-container>
                             <input type="text" [(ngModel)]="seoKeyword" name="seoKeyword"
-                                (click)="onSeoFieldClick($event)" (keyup.enter)="enterKeyword(seoKeyword)"
-                                class="form-control keyword-sel-text-bx" />
+                                (keyup.enter)="enterKeyword(seoKeyword)" class="form-control keyword-sel-text-bx" />
                         </div>
                         <p class="label-black mb-0">Product Theme:</p>
                         <div class="form-group">
@@ -201,10 +200,10 @@
                 </div>
                 <div class="clearfix"></div>
                 <div class="col-12 text-lg-right text-md-right text-sm-right text-center mt-1 ">
-                    <button type="button" class="btn btn-blue cancel my-1 mr-2">Cancel</button>
-                    <button type="submit" (click)="saveSeoProduct(false)" [disabled]="!isSeoProductModified()"
+                    <button type="button" routerLink="/searchProduct" class="btn btn-blue cancel my-1 mr-2">Cancel</button>
+                    <button type="submit" (click)="saveSeoProduct(false)" [disabled]="!isSeoProductModified() || !optimizeForm.valid"
                         class="btn btn-blue my-1 mr-2 show-toast">Done</button>
-                    <button type="submit" (click)="saveSeoProduct(true)" [disabled]="!isSeoProductModified()"
+                    <button type="submit" (click)="saveSeoProduct(true)" [disabled]="!isSeoProductModified() || !optimizeForm.valid"
                         class="btn btn-blue my-1 show-toast">Save</button>
                 </div>
                 <div class="clearfix"></div>

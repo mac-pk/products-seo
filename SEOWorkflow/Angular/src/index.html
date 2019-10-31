@@ -37,7 +37,6 @@
         crossorigin="anonymous"></script>
 </body>
 <script>
-
     $(document).ready(function () {
         $(".esp-breadcrumb").click(function () {
             $(".side-nav-toolbar").toggle();
@@ -50,6 +49,23 @@
             $("#saveProductMessage").toast({ delay: 2000 });
             $("#saveProductMessage").toast('show');
         });
+        window.onscroll = function () { showOptimizeHeader() };
+
+        var header = document.getElementById("optimizeHeader");
+
+        if (header) {
+            var sticky = header.offsetTop;
+
+            function showOptimizeHeader() {
+                if (window.pageYOffset > sticky) {
+                    header.classList.add("sticky");
+                } else {
+                    header.classList.remove("sticky");
+                }
+            }
+        } else {
+            function showOptimizeHeader() { }
+        }
     });
 </script>
 
